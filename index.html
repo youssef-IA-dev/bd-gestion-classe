@@ -4,17 +4,19 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gestion de Classe - SUP MTI Béni Mellal</title>
+    <!-- Site développé par Youssef Lachhab -->
     <style>
-        /* --- CONFIGURATION GLOBALE & VARIABLES --- */
+        /* --- DESIGN SYSTEM (SUP MTI BRANDING) --- */
         :root {
-            --primary-color: #007A78; /* Couleur SUP MTI Teal */
-            --secondary-color: #E30613; /* Couleur SUP MTI Rouge */
-            --dark-color: #2D3748;
-            --light-color: #F7FAFC;
+            --primary-teal: #007A78;
+            --secondary-red: #E30613;
+            --dark-blue: #2D3748;
+            --light-bg: #F7FAFC;
             --white: #FFFFFF;
             --gray-border: #E2E8F0;
-            --success-color: #48BB78;
-            --warning-color: #ECC94B;
+            --success-green: #48BB78;
+            --warning-yellow: #ECC94B;
+            --danger-red: #E53E3E;
             --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
         }
 
@@ -26,36 +28,14 @@
         }
 
         body {
-            background-color: var(--light-color);
-            color: var(--dark-color);
+            background-color: var(--light-bg);
+            color: var(--dark-blue);
             display: flex;
             min-height: 100vh;
+            overflow-x: hidden;
         }
 
-        /* --- LOGO SIMULÉ SUP MTI --- */
-        .logo-container {
-            padding: 15px;
-            text-align: center;
-            background: white;
-            border-bottom: 2px solid var(--gray-border);
-            margin-bottom: 20px;
-            border-radius: 8px;
-        }
-        .logo-text-top {
-            font-size: 24px;
-            font-weight: 800;
-            color: var(--primary-color);
-            letter-spacing: 1px;
-        }
-        .logo-text-bottom {
-            font-size: 14px;
-            font-weight: 700;
-            color: var(--secondary-color);
-            letter-spacing: 2px;
-            margin-top: -5px;
-        }
-
-        /* --- SIDEBAR BARRE NAV --- */
+        /* --- SIDEBAR DE NAVIGATION --- */
         aside {
             width: 260px;
             background-color: var(--white);
@@ -65,73 +45,102 @@
             flex-direction: column;
             position: fixed;
             height: 100vh;
+            z-index: 10;
         }
 
-        .nav-links {
+        .logo-box {
+            padding: 15px 5px;
+            text-align: center;
+            border-bottom: 2px solid var(--gray-border);
+            margin-bottom: 25px;
+        }
+
+        .logo-box .top {
+            font-size: 26px;
+            font-weight: 800;
+            color: var(--primary-teal);
+            letter-spacing: 1px;
+        }
+
+        .logo-box .bottom {
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--secondary-red);
+            letter-spacing: 1.5px;
+            margin-top: -4px;
+        }
+
+        .nav-menu {
             list-style: none;
             flex-grow: 1;
         }
 
-        .nav-links li {
-            margin-bottom: 10px;
+        .nav-menu li {
+            margin-bottom: 8px;
         }
 
-        .nav-links a {
+        .nav-menu a {
             display: flex;
             align-items: center;
             padding: 12px 15px;
-            color: var(--dark-color);
+            color: var(--dark-blue);
             text-decoration: none;
             font-weight: 600;
             border-radius: 8px;
-            transition: all 0.3s ease;
+            transition: all 0.2s ease-in-out;
         }
 
-        .nav-links a:hover, .nav-links li.active a {
-            background-color: var(--primary-color);
+        .nav-menu li.active a, .nav-menu a:hover {
+            background-color: var(--primary-teal);
             color: var(--white);
         }
 
-        .nav-links a .icon {
+        .nav-menu .icon {
             margin-right: 12px;
             font-size: 1.2rem;
         }
 
-        footer {
+        aside footer {
             font-size: 0.8rem;
-            color: #A0AEC0;
+            color: #718096;
             text-align: center;
             border-top: 1px solid var(--gray-border);
             padding-top: 15px;
+            line-height: 1.4;
         }
 
-        /* --- ESPACE PRINCIPAL --- */
+        /* --- ZONE CONTENU PRINCIPAL --- */
         main {
             margin-left: 260px;
             flex-grow: 1;
             padding: 40px;
-            overflow-y: auto;
+            min-height: 100vh;
         }
 
-        header {
+        main header {
             display: flex;
             justify-content: space-between;
             align-items: center;
             margin-bottom: 30px;
-            border-bottom: 2px solid var(--primary-color);
+            border-bottom: 2px solid var(--primary-teal);
             padding-bottom: 15px;
         }
 
-        .user-profile {
+        .profile-badge {
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 12px;
+            background: var(--white);
+            padding: 8px 16px;
+            border-radius: 30px;
+            box-shadow: var(--shadow);
+            font-weight: 600;
         }
 
-        .avatar-initials {
-            width: 40px;
-            height: 40px;
-            background-color: var(--secondary-color);
+        .avatar {
+            width: 35px;
+            height: 35px;
+            background-color: var(--secondary-red);
             color: white;
             border-radius: 50%;
             display: flex;
@@ -140,63 +149,85 @@
             font-weight: bold;
         }
 
-        /* --- SECTIONS (Pages) --- */
-        .page-section {
+        /* --- PAGES / SECTIONS --- */
+        .section-page {
             display: none;
         }
 
-        .page-section.active {
+        .section-page.active-page {
             display: block;
         }
 
-        /* --- CARDS & GRID --- */
-        .stats-grid {
+        /* --- GRIDS & BLOCS --- */
+        .stats-container {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
             gap: 20px;
-            margin-bottom: 30px;
+            margin-bottom: 35px;
         }
 
-        .card {
+        .stat-card {
             background: var(--white);
             padding: 20px;
-            border-radius: 10px;
+            border-radius: 12px;
             box-shadow: var(--shadow);
-            border-left: 5px solid var(--primary-color);
+            border-left: 6px solid var(--primary-teal);
         }
 
-        .card.red-brand {
-            border-left: 5px solid var(--secondary-color);
+        .stat-card.accent-card {
+            border-left-color: var(--secondary-red);
         }
 
-        .card h3 {
-            font-size: 0.9rem;
+        .stat-card h3 {
+            font-size: 0.85rem;
             color: #718096;
             text-transform: uppercase;
-            margin-bottom: 5px;
+            margin-bottom: 8px;
+            letter-spacing: 0.5px;
         }
 
-        .card .value {
-            font-size: 1.8rem;
-            font-weight: bold;
+        .stat-card .num {
+            font-size: 2rem;
+            font-weight: 700;
         }
 
-        /* --- TABLES & FORMULAIRES --- */
-        .content-box {
+        .panel {
             background: var(--white);
             padding: 25px;
-            border-radius: 10px;
+            border-radius: 12px;
             box-shadow: var(--shadow);
             margin-bottom: 30px;
         }
 
-        .box-header {
+        .panel-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
             margin-bottom: 20px;
         }
 
+        /* --- FORMULAIRES & COMPOSANTS CONTROLE --- */
+        .input-bar {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .form-input {
+            padding: 10px 14px;
+            border: 1px solid var(--gray-border);
+            border-radius: 8px;
+            outline: none;
+            font-size: 0.95rem;
+            min-width: 200px;
+        }
+
+        .form-input:focus {
+            border-color: var(--primary-teal);
+        }
+
+        /* --- TABLEAUX --- */
         table {
             width: 100%;
             border-collapse: collapse;
@@ -204,186 +235,200 @@
         }
 
         th, td {
-            padding: 12px 15px;
+            padding: 14px 18px;
             border-bottom: 1px solid var(--gray-border);
         }
 
         th {
             background-color: #EDF2F7;
             font-weight: 600;
+            color: #4A5568;
         }
 
-        /* --- BOUTONS & FORMULAIRES --- */
+        tr:hover td {
+            background-color: #F8FAFC;
+        }
+
+        /* --- BOUTONS --- */
         .btn {
-            padding: 8px 16px;
+            padding: 10px 18px;
             border: none;
-            border-radius: 6px;
+            border-radius: 8px;
             cursor: pointer;
             font-weight: 600;
+            font-size: 0.9rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
             transition: opacity 0.2s;
         }
 
-        .btn:hover {
-            opacity: 0.9;
+        .btn:hover { opacity: 0.9; }
+        .btn-primary { background-color: var(--primary-teal); color: white; }
+        .btn-secondary { background-color: var(--secondary-red); color: white; }
+        .btn-danger { background-color: var(--danger-red); color: white; }
+        .btn-success { background-color: var(--success-green); color: white; }
+
+        .pill {
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: bold;
+            display: inline-block;
         }
+        .pill-green { background: #DEF7EC; color: #03543F; }
+        .pill-red { background: #FDE8E8; color: #9B1C1C; }
 
-        .btn-primary { background-color: var(--primary-color); color: white; }
-        .btn-secondary { background-color: var(--secondary-color); color: white; }
-        .btn-success { background-color: var(--success-color); color: white; }
-        .btn-danger { background-color: #E53E3E; color: white; }
-
-        .form-inline {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 20px;
-            flex-wrap: wrap;
-        }
-
-        .form-control {
-            padding: 8px 12px;
-            border: 1px solid var(--gray-border);
-            border-radius: 6px;
-            outline: none;
-        }
-
-        .form-control:focus {
-            border-color: var(--primary-color);
-        }
-
-        /* --- GRID EMPLOI DU TEMPS --- */
-        .timetable-grid {
+        /* --- EMPLOI DU TEMPS GRILLE --- */
+        .grid-schedule {
             display: grid;
-            grid-template-columns: 100px repeat(5, 1fr);
-            gap: 10px;
-            background: #EDF2F7;
-            padding: 10px;
-            border-radius: 10px;
+            grid-template-columns: 120px repeat(5, 1fr);
+            gap: 12px;
+            background: #E2E8F0;
+            padding: 12px;
+            border-radius: 12px;
         }
 
-        .timetable-header {
+        .sched-header {
             font-weight: bold;
             text-align: center;
-            background: var(--primary-color);
+            background: var(--primary-teal);
             color: white;
-            padding: 10px;
-            border-radius: 4px;
+            padding: 12px;
+            border-radius: 6px;
         }
 
-        .time-slot {
+        .hour-cell {
             background: #CBD5E0;
             font-weight: bold;
             display: flex;
             align-items: center;
             justify-content: center;
-            padding: 15px 5px;
-            border-radius: 4px;
+            padding: 20px 5px;
+            border-radius: 6px;
+            font-size: 0.9rem;
         }
 
-        .course-card {
+        .lesson-card {
             background: white;
-            border: 1px solid var(--gray-border);
-            border-top: 4px solid var(--secondary-color);
-            padding: 10px;
-            border-radius: 4px;
-            min-height: 80px;
-            font-size: 0.85rem;
+            border-left: 5px solid var(--secondary-red);
+            padding: 12px;
+            border-radius: 6px;
+            min-height: 90px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.04);
+        }
+        .empty-card {
+            background: #EDF2F7;
+            border: 1px dashed #CBD5E0;
+            border-radius: 6px;
         }
 
-        .course-title { font-weight: bold; color: var(--dark-color); }
-        .course-prof { color: #4A5568; font-style: italic; }
-        .course-room { font-size: 0.75rem; color: #718096; margin-top: 5px; }
+        .lesson-name { font-weight: 700; color: var(--dark-blue); font-size: 0.9rem; }
+        .lesson-prof { color: #4A5568; font-style: italic; font-size: 0.8rem; margin-top: 2px; }
+        .lesson-room { font-size: 0.75rem; color: #718096; margin-top: 6px; font-weight: 600; }
 
-        /* Modal simple style */
-        .modal {
+        /* --- MODALS CONTENEURS --- */
+        .modal-overlay {
             display: none;
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.5);
+            background: rgba(45, 55, 72, 0.6);
             justify-content: center; align-items: center;
-            z-index: 1000;
+            z-index: 100;
         }
-        .modal-content {
-            background: white; padding: 30px; border-radius: 8px; width: 450px;
+        .modal-window {
+            background: white; padding: 30px; border-radius: 12px; width: 480px;
             box-shadow: var(--shadow);
+            animation: fadeIn 0.2s ease-out;
         }
-        .modal-content h3 { margin-bottom: 20px; color: var(--primary-color); }
-        .form-group { margin-bottom: 15px; display: flex; flex-direction: column; gap: 5px; }
+        .modal-window h3 { margin-bottom: 20px; color: var(--primary-teal); border-bottom: 1px solid var(--gray-border); padding-bottom: 10px;}
+        .field-group { margin-bottom: 16px; display: flex; flex-direction: column; gap: 6px; }
+        .field-group label { font-weight: 600; font-size: 0.9rem; }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
     </style>
 </head>
 <body>
 
+    <!-- BARRE NAV MENU LATÉRAL -->
     <aside>
-        <div class="logo-container">
-            <div class="logo-text-top">SUP MTI</div>
-            <div class="logo-text-bottom">BÉNI MELLAL</div>
+        <div class="logo-box">
+            <div class="top">SUP MTI</div>
+            <div class="bottom">BÉNI MELLAL</div>
         </div>
-        <ul class="nav-links">
-            <li class="active" onclick="switchPage('dashboard')"><a href="#"><span class="icon">🏠</span>Tableau de bord</a></li>
-            <li onclick="switchPage('students')"><a href="#"><span class="icon">👥</span>Étudiants</a></li>
-            <li onclick="switchPage('notes')"><a href="#"><span class="icon">📄</span>Notes</a></li>
-            <li onclick="switchPage('absences')"><a href="#"><span class="icon">📅</span>Absences</a></li>
-            <li onclick="switchPage('timetable')"><a href="#"><span class="icon">🕒</span>Emploi du Temps</a></li>
+        <ul class="nav-menu">
+            <li class="active" id="link-dash" onclick="navigate('dash')"><a href="#"><span class="icon">🏠</span>Tableau de bord</a></li>
+            <li id="link-stud" onclick="navigate('stud')"><a href="#"><span class="icon">👥</span>Étudiants</a></li>
+            <li id="link-note" onclick="navigate('note')"><a href="#"><span class="icon">📄</span>Notes & Moyennes</a></li>
+            <li id="link-abs" onclick="navigate('abs')"><a href="#"><span class="icon">📅</span>Absences</a></li>
+            <li id="link-time" onclick="navigate('time')"><a href="#"><span class="icon">🕒</span>Emploi du temps</a></li>
         </ul>
         <footer>
-            <p><strong>Youssef Lachhab</strong></p>
-            <p>2ème année ISI · 2025/2026</p>
+            <p><strong>Réalisé par :</strong></p>
+            <p>Youssef Lachhab</p>
+            <p>2ème année ISI · 2025 / 2026</p>
         </footer>
     </aside>
 
+    <!-- ZONE PRINCIPALE DE TRAVAIL -->
     <main>
         <header>
             <div>
-                <h1 id="page-title">Tableau de bord</h1>
-                <p style="color: #718096;">Système de Gestion de Classe (Merise MLD)</p>
+                <h1 id="main-view-title">Tableau de bord</h1>
+                <p style="color: #718096; font-size: 0.9rem; margin-top: 2px;">Rapport de Projet — Gestion de Classe (Merise Normalisé)</p>
             </div>
-            <div class="user-profile">
-                <span style="font-weight: 600;">Formateur Admin</span>
-                <div class="avatar-initials">YL</div>
+            <div class="profile-badge">
+                <span>Formateur Admin</span>
+                <div class="avatar">YL</div>
             </div>
         </header>
 
-        <section id="dashboard" class="page-section active">
-            <div class="stats-grid">
-                <div class="card">
-                    <h3>Total Étudiants</h3>
-                    <div class="value" id="dash-total-students">0</div>
+        <!-- ================= PAGE 1: DASHBOARD ================= -->
+        <section id="view-dash" class="section-page active-page">
+            <div class="stats-container">
+                <div class="stat-card">
+                    <h3>Effectif Étudiants</h3>
+                    <div class="num" id="card-count-students">0</div>
                 </div>
-                <div class="card red-brand">
+                <div class="stat-card accent-card">
                     <h3>Moyenne Générale</h3>
-                    <div class="value" id="dash-general-average">0.00 /20</div>
+                    <div class="num" id="card-global-avg">0.00</div>
                 </div>
-                <div class="card">
-                    <h3>Absences non justifiées</h3>
-                    <div class="value" id="dash-unjustified-abs">0</div>
+                <div class="stat-card">
+                    <h3>Non Justifiées</h3>
+                    <div class="num" id="card-unjustified-abs">0</div>
                 </div>
-                <div class="card red-brand">
-                    <h3>Matières Enseignées</h3>
-                    <div class="value">4</div>
+                <div class="stat-card accent-card">
+                    <h3>Matières Actives</h3>
+                    <div class="num">4</div>
                 </div>
             </div>
 
-            <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 20px;">
-                <div class="content-box">
-                    <div class="box-header"><h2>Classement Général des Étudiants</h2></div>
-                    <table id="dash-ranking-table">
+            <div style="display: grid; grid-template-columns: 1.5fr 1fr; gap: 25px;">
+                <div class="panel">
+                    <div class="panel-header"><h2>🏆 Classement des Étudiants</h2></div>
+                    <table id="table-dash-ranking">
                         <thead>
                             <tr>
                                 <th>Rang</th>
-                                <th>Nom & Prénom</th>
-                                <th>Moyenne</th>
+                                <th>Étudiant</th>
+                                <th>Moyenne Semestrielle</th>
                             </tr>
                         </thead>
                         <tbody></tbody>
                     </table>
                 </div>
 
-                <div class="content-box">
-                    <div class="box-header"><h2>Absences Récentes</h2></div>
-                    <table id="dash-abs-table">
+                <div class="panel">
+                    <div class="panel-header"><h2>⚠️ Absences Récentes</h2></div>
+                    <table id="table-dash-absences">
                         <thead>
                             <tr>
-                                <th>Étudiant</th>
-                                <th>Séance</th>
+                                <th>Nom</th>
+                                <th>Cours</th>
                             </tr>
                         </thead>
                         <tbody></tbody>
@@ -392,19 +437,20 @@
             </div>
         </section>
 
-        <section id="students" class="page-section">
-            <div class="content-box">
-                <div class="box-header">
-                    <h2>Liste des Étudiants (Table: ETUDIANT)</h2>
-                    <button class="btn btn-primary" onclick="openModal('student-modal')">+ Ajouter un Étudiant</button>
+        <!-- ================= PAGE 2: ÉTUDIANTS (CRUD) ================= -->
+        <section id="view-stud" class="section-page">
+            <div class="panel">
+                <div class="panel-header">
+                    <h2>Registre des Inscriptions (Table: ETUDIANT)</h2>
+                    <button class="btn btn-primary" onclick="toggleModal('modal-student', true)">+ Inscrire un Étudiant</button>
                 </div>
-                <div class="form-inline">
-                    <input type="text" id="search-student" class="form-control" placeholder="Rechercher par nom..." onkeyup="filterStudents()">
+                <div class="input-bar">
+                    <input type="text" id="search-stud-input" class="form-control form-input" placeholder="Rechercher un nom..." onkeyup="searchStudent()">
                 </div>
-                <table id="students-table">
+                <table id="table-students-crud">
                     <thead>
                         <tr>
-                            <th>ID</th>
+                            <th>ID Code</th>
                             <th>Nom</th>
                             <th>Prénom</th>
                             <th>Email</th>
@@ -417,14 +463,15 @@
             </div>
         </section>
 
-        <section id="notes" class="page-section">
-            <div class="content-box">
-                <div class="box-header">
-                    <h2>Gestion des Notes (Table: NOTE)</h2>
-                    <button class="btn btn-primary" onclick="openModal('note-modal')">+ Saisir une Note</button>
+        <!-- ================= PAGE 3: NOTES ================= -->
+        <section id="view-note" class="section-page">
+            <div class="panel">
+                <div class="panel-header">
+                    <h2>Évaluation Pédagogique (Table: NOTE)</h2>
+                    <button class="btn btn-primary" onclick="toggleModal('modal-note', true)">+ Saisir une Note</button>
                 </div>
-                <div class="form-inline">
-                    <select id="filter-note-matiere" class="form-control" onchange="renderNotes()">
+                <div class="input-bar">
+                    <select id="select-filter-matiere" class="form-input" onchange="renderNotesView()">
                         <option value="all">Toutes les matières</option>
                         <option value="1">Web Dynamique (PHP/MySQL)</option>
                         <option value="2">Intelligence Artificielle</option>
@@ -432,14 +479,14 @@
                         <option value="4">Architecture Java OOPS</option>
                     </select>
                 </div>
-                <table id="notes-table">
+                <table id="table-notes">
                     <thead>
                         <tr>
                             <th>Étudiant</th>
-                            <th>Matière</th>
-                            <th>Type Examen</th>
+                            <th>Matière Enseignée</th>
+                            <th>Type Évaluation</th>
                             <th>Note /20</th>
-                            <th>Date</th>
+                            <th>Date Saisie</th>
                         </tr>
                     </thead>
                     <tbody></tbody>
@@ -447,20 +494,21 @@
             </div>
         </section>
 
-        <section id="absences" class="page-section">
-            <div class="content-box">
-                <div class="box-header">
-                    <h2>Registre des Absences (Table: ABSENCE)</h2>
-                    <button class="btn btn-secondary" onclick="openModal('absence-modal')">+ Marquer une Absence</button>
+        <!-- ================= PAGE 4: ABSENCES ================= -->
+        <section id="view-abs" class="section-page">
+            <div class="panel">
+                <div class="panel-header">
+                    <h2>Suivi des Présences & Absences (Table: ABSENCE)</h2>
+                    <button class="btn btn-secondary" onclick="toggleModal('modal-abs', true)">+ Déclarer une Absence</button>
                 </div>
-                <table id="absences-table">
+                <table id="table-absences">
                     <thead>
                         <tr>
                             <th>Date</th>
                             <th>Étudiant</th>
-                            <th>Matière / Séance</th>
+                            <th>Séance de Cours</th>
                             <th>Statut</th>
-                            <th>Action</th>
+                            <th>Action Spécifique</th>
                         </tr>
                     </thead>
                     <tbody></tbody>
@@ -468,126 +516,131 @@
             </div>
         </section>
 
-        <section id="timetable" class="page-section">
-            <div class="content-box">
-                <div class="box-header">
-                    <h2>Grille Hebdomadaire Interactive (Table: EMPLOI_TEMPS)</h2>
+        <!-- ================= PAGE 5: EMPLOI DU TEMPS ================= -->
+        <section id="view-time" class="section-page">
+            <div class="panel">
+                <div class="panel-header">
+                    <h2>Grille Hebdomadaire des Cours (Table: EMPLOI_TEMPS)</h2>
                 </div>
-                <div class="timetable-grid">
-                    <div class="timetable-header" style="background:#2D3748;">Heures</div>
-                    <div class="timetable-header">Lundi</div>
-                    <div class="timetable-header">Mardi</div>
-                    <div class="timetable-header">Mercredi</div>
-                    <div class="timetable-header">Jeudi</div>
-                    <div class="timetable-header">Vendredi</div>
+                
+                <div class="grid-schedule">
+                    <div class="sched-header" style="background:#2D3748;">Heures</div>
+                    <div class="sched-header">Lundi</div>
+                    <div class="sched-header">Mardi</div>
+                    <div class="sched-header">Mercredi</div>
+                    <div class="sched-header">Jeudi</div>
+                    <div class="sched-header">Vendredi</div>
 
-                    <div class="time-slot">08:30 - 11:00</div>
-                    <div class="course-card"><div class="course-title">Web PHP/MySQL</div><div class="course-prof">M. Lachhab</div><div class="course-room">Salle 3 (ISI)</div></div>
-                    <div class="course-card" style="background:#EDF2F7; border:none;"></div>
-                    <div class="course-card"><div class="course-title">Intelligence Artificielle</div><div class="course-prof">M. Lachhab</div><div class="course-room">Labo IA</div></div>
-                    <div class="course-card" style="background:#EDF2F7; border:none;"></div>
-                    <div class="course-card"><div class="course-title">Architecture Java</div><div class="course-prof">Prof. SUPMTI</div><div class="course-room">Amphi A</div></div>
+                    <!-- Ligne 1 -->
+                    <div class="hour-cell">08:30 - 11:00</div>
+                    <div class="lesson-card"><div class="lesson-name">Web PHP/MySQL</div><div class="lesson-prof">M. Lachhab</div><div class="lesson-room">Salle 3 (ISI)</div></div>
+                    <div class="empty-card"></div>
+                    <div class="lesson-card"><div class="lesson-name">Intelligence Artificielle</div><div class="lesson-prof">M. Lachhab</div><div class="lesson-room">Labo IA</div></div>
+                    <div class="empty-card"></div>
+                    <div class="lesson-card"><div class="lesson-name">Architecture Java</div><div class="lesson-prof">Prof. SUPMTI</div><div class="lesson-room">Amphi A</div></div>
 
-                    <div class="time-slot">11:00 - 13:30</div>
-                    <div class="course-card" style="background:#EDF2F7; border:none;"></div>
-                    <div class="course-card"><div class="course-title">Automatisation</div><div class="course-prof">M. Lachhab</div><div class="course-room">Labo Réseau</div></div>
-                    <div class="course-card" style="background:#EDF2F7; border:none;"></div>
-                    <div class="course-card"><div class="course-title font-weight-bold">Web PHP/MySQL</div><div class="course-prof">M. Lachhab</div><div class="course-room">Salle 3</div></div>
-                    <div class="course-card" style="background:#EDF2F7; border:none;"></div>
+                    <!-- Ligne 2 -->
+                    <div class="hour-cell">11:00 - 13:30</div>
+                    <div class="empty-card"></div>
+                    <div class="lesson-card"><div class="lesson-name">Automatisation</div><div class="lesson-prof">M. Lachhab</div><div class="lesson-room">Labo Réseau</div></div>
+                    <div class="empty-card"></div>
+                    <div class="lesson-card"><div class="lesson-name">Web PHP/MySQL</div><div class="lesson-prof">M. Lachhab</div><div class="lesson-room">Salle 3</div></div>
+                    <div class="empty-card"></div>
 
-                    <div class="time-slot">14:30 - 17:00</div>
-                    <div class="course-card"><div class="course-title">Projet Pratique</div><div class="course-prof">Encadrant ISI</div><div class="course-room">Salle Informatique</div></div>
-                    <div class="course-card" style="background:#EDF2F7; border:none;"></div>
-                    <div class="course-card"><div class="course-title">Architecture Java</div><div class="course-prof">Prof. SUPMTI</div><div class="course-room">Amphi A</div></div>
-                    <div class="course-card" style="background:#EDF2F7; border:none;"></div>
-                    <div class="course-card"><div class="course-title">Mini-Projet IA</div><div class="course-prof">M. Lachhab</div><div class="course-room">Distance</div></div>
+                    <!-- Ligne 3 -->
+                    <div class="hour-cell">14:30 - 17:00</div>
+                    <div class="lesson-card"><div class="lesson-name">Projet Pratique</div><div class="lesson-prof">Encadrant ISI</div><div class="lesson-room">Salle Informatique</div></div>
+                    <div class="empty-card"></div>
+                    <div class="lesson-card"><div class="lesson-name">Architecture Java</div><div class="lesson-prof">Prof. SUPMTI</div><div class="lesson-room">Amphi A</div></div>
+                    <div class="empty-card"></div>
+                    <div class="lesson-card"><div class="lesson-name">Mini-Projet IA</div><div class="lesson-prof">M. Lachhab</div><div class="lesson-room">À distance</div></div>
                 </div>
             </div>
         </section>
     </main>
 
-    <div id="student-modal" class="modal">
-        <div class="modal-content">
+    <!-- ================= MODALS DE SAISIE DE DONNÉES ================= -->
+    
+    <!-- MODAL INCRIPTION ETUDIANT -->
+    <div id="modal-student" class="modal-overlay">
+        <div class="modal-window">
             <h3>Ajouter un nouvel Étudiant</h3>
-            <form id="student-form" onsubmit="addStudent(event)">
-                <div class="form-group"><label>Nom</label><input type="text" id="stud-nom" class="form-control" required></div>
-                <div class="form-group"><label>Prénom</label><input type="text" id="stud-prenom" class="form-control" required></div>
-                <div class="form-group"><label>Email</label><input type="email" id="stud-email" class="form-control" required></div>
-                <div class="form-group"><label>Téléphone</label><input type="text" id="stud-tel" class="form-control" required></div>
-                <div style="display:flex; justify-content:flex-end; gap:10px; margin-top:15px;">
-                    <button type="button" class="btn btn-danger" onclick="closeModal('student-modal')">Annuler</button>
-                    <button type="submit" class="btn btn-primary">Enregistrer</button>
+            <form id="form-add-student" onsubmit="submitStudent(event)">
+                <div class="field-group"><label>Nom de Famille</label><input type="text" id="in-stud-nom" class="form-input" required></div>
+                <div class="field-group"><label>Prénom</label><input type="text" id="in-stud-prenom" class="form-input" required></div>
+                <div class="field-group"><label>Adresse Email</label><input type="email" id="in-stud-email" class="form-input" required></div>
+                <div class="field-group"><label>N° Téléphone</label><input type="text" id="in-stud-tel" class="form-input" required></div>
+                <div style="display:flex; justify-content:flex-end; gap:10px; margin-top:20px;">
+                    <button type="button" class="btn btn-danger" onclick="toggleModal('modal-student', false)">Fermer</button>
+                    <button type="submit" class="btn btn-success">Valider l'Inscription</button>
                 </div>
             </form>
         </div>
     </div>
 
-    <div id="note-modal" class="modal">
-        <div class="modal-content">
-            <h3>Enregistrer une Note</h3>
-            <form id="note-form" onsubmit="addNote(event)">
-                <div class="form-group">
-                    <label>Étudiant</label>
-                    <select id="note-student-select" class="form-control"></select>
-                </div>
-                <div class="form-group">
-                    <label>Matière</label>
-                    <select id="note-matiere-select" class="form-control">
+    <!-- MODAL AJOUT NOTE -->
+    <div id="modal-note" class="modal-overlay">
+        <div class="modal-window">
+            <h3>Enregistrer une Note d'examen</h3>
+            <form id="form-add-note" onsubmit="submitNote(event)">
+                <div class="field-group"><label>Sélectionner l'Étudiant</label><select id="select-note-student" class="form-input"></select></div>
+                <div class="field-group">
+                    <label>Matière concernée</label>
+                    <select id="select-note-matiere" class="form-input">
                         <option value="1">Web Dynamique (PHP/MySQL)</option>
                         <option value="2">Intelligence Artificielle</option>
                         <option value="3">Automatisation & Scripts</option>
                         <option value="4">Architecture Java OOPS</option>
                     </select>
                 </div>
-                <div class="form-group">
-                    <label>Type d'Examen</label>
-                    <select id="note-type" class="form-control">
+                <div class="field-group">
+                    <label>Nature de l'Évaluation</label>
+                    <select id="select-note-type" class="form-input">
                         <option value="Contrôle Continu">Contrôle Continu</option>
                         <option value="Examen Terminal">Examen Terminal</option>
                         <option value="TP Pratique">TP Pratique</option>
                     </select>
                 </div>
-                <div class="form-group"><label>Note /20</label><input type="number" id="note-valeur" min="0" max="20" step="0.25" class="form-control" required></div>
-                <div style="display:flex; justify-content:flex-end; gap:10px; margin-top:15px;">
-                    <button type="button" class="btn btn-danger" onclick="closeModal('note-modal')">Annuler</button>
-                    <button type="submit" class="btn btn-primary">Enregistrer</button>
+                <div class="field-group"><label>Note Numérique (0 - 20)</label><input type="number" id="in-note-valeur" min="0" max="20" step="0.25" class="form-input" required></div>
+                <div style="display:flex; justify-content:flex-end; gap:10px; margin-top:20px;">
+                    <button type="button" class="btn btn-danger" onclick="toggleModal('modal-note', false)">Annuler</button>
+                    <button type="submit" class="btn btn-success">Sauvegarder Note</button>
                 </div>
             </form>
         </div>
     </div>
 
-    <div id="absence-modal" class="modal">
-        <div class="modal-content">
-            <h3>Marquer une Absence</h3>
-            <form id="absence-form" onsubmit="addAbsence(event)">
-                <div class="form-group">
-                    <label>Étudiant</label>
-                    <select id="abs-student-select" class="form-control"></select>
-                </div>
-                <div class="form-group">
-                    <label>Séance / Matière</label>
-                    <select id="abs-matiere" class="form-control">
+    <!-- MODAL MARQUER ABSENCE -->
+    <div id="modal-abs" class="modal-overlay">
+        <div class="modal-window">
+            <h3>Signaler une Absence</h3>
+            <form id="form-add-abs" onsubmit="submitAbsence(event)">
+                <div class="field-group"><label>Étudiant Absent</label><select id="select-abs-student" class="form-input"></select></div>
+                <div class="field-group">
+                    <label>Module / Séance</label>
+                    <select id="select-abs-matiere" class="form-input">
                         <option value="Web PHP/MySQL">Web PHP/MySQL</option>
                         <option value="Intelligence Artificielle">Intelligence Artificielle</option>
                         <option value="Automatisation">Automatisation</option>
                         <option value="Architecture Java">Architecture Java</option>
                     </select>
                 </div>
-                <div style="display:flex; justify-content:flex-end; gap:10px; margin-top:15px;">
-                    <button type="button" class="btn btn-danger" onclick="closeModal('absence-modal')">Annuler</button>
-                    <button type="submit" class="btn btn-primary">Valider</button>
+                <div style="display:flex; justify-content:flex-end; gap:10px; margin-top:20px;">
+                    <button type="button" class="btn btn-danger" onclick="toggleModal('modal-abs', false)">Annuler</button>
+                    <button type="submit" class="btn btn-primary">Enregistrer</button>
                 </div>
             </form>
         </div>
     </div>
 
+    <!-- ================= ENGINE LOGIQUE (JAVASCRIPT REPLICA) ================= -->
     <script>
-        // --- BASE DE DONNÉES SIMULÉE (LocalStorage pour conserver les modifications lors du rafraîchissement) ---
-        let db = {
-            etudiants: JSON.parse(localStorage.getItem('db_etudiants')) || [
-                { id: 1, nom: "Alaoui", prenom: "Amine", email: "amine@supmti.ma", tel: "0612345678" },
-                { id: 2, nom: "Benjelloun", prenom: "Sara", email: "sara@supmti.ma", tel: "0676543210" },
-                { id: 3, nom: "Chraibi", prenom: "Omar", email: "omar@supmti.ma", tel: "0655443322" }
+        // --- BASE DE DONNÉES EN CORE LOCALSTORAGE ---
+        let storage = {
+            etudiants: JSON.parse(localStorage.getItem('mti_stud')) || [
+                { id: 101, nom: "Alaoui", prenom: "Amine", email: "amine.alaoui@supmti.ma", tel: "0612345678" },
+                { id: 102, nom: "Benjelloun", prenom: "Sara", email: "sara.benj@supmti.ma", tel: "0676543210" },
+                { id: 103, nom: "Chraibi", prenom: "Omar", email: "o.chraibi@supmti.ma", tel: "0655443322" }
             ],
             matieres: {
                 "1": "Web Dynamique (PHP/MySQL)",
@@ -595,233 +648,207 @@
                 "3": "Automatisation & Scripts",
                 "4": "Architecture Java OOPS"
             },
-            notes: JSON.parse(localStorage.getItem('db_notes')) || [
-                { id_etudiant: 1, id_matiere: "1", type: "Contrôle Continu", valeur: 15, date: "2026-05-10" },
-                { id_etudiant: 1, id_matiere: "2", type: "Examen Terminal", valeur: 14, date: "2026-05-12" },
-                { id_etudiant: 2, id_matiere: "1", type: "Contrôle Continu", valeur: 17, date: "2026-05-10" },
-                { id_etudiant: 3, id_matiere: "3", type: "TP Pratique", valeur: 11, date: "2026-05-14" }
+            notes: JSON.parse(localStorage.getItem('mti_notes')) || [
+                { id_etudiant: 101, id_matiere: "1", type: "Contrôle Continu", valeur: 15.5, date: "2026-06-01" },
+                { id_etudiant: 101, id_matiere: "2", type: "Examen Terminal", valeur: 14, date: "2026-06-02" },
+                { id_etudiant: 102, id_matiere: "1", type: "Contrôle Continu", valeur: 18.25, date: "2026-06-01" },
+                { id_etudiant: 103, id_matiere: "3", type: "TP Pratique", valeur: 11.5, date: "2026-06-04" }
             ],
-            absences: JSON.parse(localStorage.getItem('db_absences')) || [
-                { id: 1, id_etudiant: 3, seance: "Web PHP/MySQL", date: "2026-06-01", justifiee: false },
-                { id: 2, id_etudiant: 1, seance: "Architecture Java", date: "2026-06-03", justifiee: true }
+            absences: JSON.parse(localStorage.getItem('mti_abs')) || [
+                { id: 1, id_etudiant: 103, seance: "Web PHP/MySQL", date: "2026-06-05", justifiee: false },
+                { id: 2, id_etudiant: 101, seance: "Architecture Java", date: "2026-06-06", justifiee: true }
             ]
         };
 
-        function saveDB() {
-            localStorage.setItem('db_etudiants', JSON.stringify(db.etudiants));
-            localStorage.setItem('db_notes', JSON.stringify(db.notes));
-            localStorage.setItem('db_absences', JSON.stringify(db.absences));
-            updateDashboardMetrics();
+        function commit() {
+            localStorage.setItem('mti_stud', JSON.stringify(storage.etudiants));
+            localStorage.setItem('mti_notes', JSON.stringify(storage.notes));
+            localStorage.setItem('mti_abs', JSON.stringify(storage.absences));
+            refreshDashboard();
         }
 
-        // --- ROUTAGE INTERNE SIMPLE ---
-        function switchPage(pageId) {
-            document.querySelectorAll('.page-section').forEach(sec => sec.classList.remove('active'));
-            document.querySelectorAll('.nav-links li').forEach(li => li.classList.remove('active'));
-            
-            document.getElementById(pageId).classList.add('active');
-            
-            // Retrouver l'élément li cliqué pour le style actif
-            const links = document.querySelectorAll('.nav-links li');
-            if(pageId === 'dashboard') links[0].classList.add('active');
-            if(pageId === 'students') links[1].classList.add('active');
-            if(pageId === 'notes') links[2].classList.add('active');
-            if(pageId === 'absences') links[3].classList.add('active');
-            if(pageId === 'timetable') links[4].classList.add('active');
+        // --- NAVIGATION INTERNE ---
+        function navigate(viewKey) {
+            document.querySelectorAll('.section-page').forEach(view => view.classList.remove('active-page'));
+            document.querySelectorAll('.nav-menu li').forEach(item => item.classList.remove('active'));
 
-            // Mettre à jour les titres dynamiques de la page
-            const titles = { dashboard: "Tableau de bord", students: "Gestion des Étudiants", notes: "Saisie des Notes", absences: "Registre des Absences", timetable: "Emploi du Temps" };
-            document.getElementById('page-title').innerText = titles[pageId];
-            
-            // Rafraîchir les rendus de table appropriés
-            if(pageId === 'dashboard') updateDashboardMetrics();
-            if(pageId === 'students') renderStudents();
-            if(pageId === 'notes') renderNotes();
-            if(pageId === 'absences') renderAbsences();
+            if(viewKey === 'dash') { document.getElementById('view-dash').classList.add('active-page'); document.getElementById('link-dash').classList.add('active'); document.getElementById('main-view-title').innerText = "Tableau de bord"; refreshDashboard(); }
+            if(viewKey === 'stud') { document.getElementById('view-stud').classList.add('active-page'); document.getElementById('link-stud').classList.add('active'); document.getElementById('main-view-title').innerText = "Gestion des Étudiants"; renderStudentsCRUD(); }
+            if(viewKey === 'note') { document.getElementById('view-note').classList.add('active-page'); document.getElementById('link-note').classList.add('active'); document.getElementById('main-view-title').innerText = "Gestion des Notes"; renderNotesView(); }
+            if(viewKey === 'abs')  { document.getElementById('view-abs').classList.add('active-page'); document.getElementById('link-abs').classList.add('active'); document.getElementById('main-view-title').innerText = "Registre des Absences"; renderAbsencesView(); }
+            if(viewKey === 'time') { document.getElementById('view-time').classList.add('active-page'); document.getElementById('link-time').classList.add('active'); document.getElementById('main-view-title').innerText = "Emploi du Temps Interactive"; }
         }
 
-        // --- INTERFACES MODALES ---
-        function openModal(id) {
-            document.getElementById(id).style.display = 'flex';
-            if (id === 'note-modal' || id === 'absence-modal') {
-                populateStudentSelects();
+        // --- GESTION DES MODALS ---
+        function toggleModal(id, open) {
+            document.getElementById(id).style.display = open ? 'flex' : 'none';
+            if(open && (id === 'modal-note' || id === 'modal-abs')) {
+                let dropdownOptions = storage.etudiants.map(st => `<option value="${st.id}">${st.nom} ${st.prenom}</option>`).join('');
+                document.getElementById('select-note-student').innerHTML = dropdownOptions;
+                document.getElementById('select-abs-student').innerHTML = dropdownOptions;
             }
         }
-        function closeModal(id) { document.getElementById(id).style.display = 'none'; }
 
-        function populateStudentSelects() {
-            const noteSelect = document.getElementById('note-student-select');
-            const absSelect = document.getElementById('abs-student-select');
-            let options = db.etudiants.map(e => `<option value="${e.id}">${e.nom} ${e.prenom}</option>`).join('');
-            if(noteSelect) noteSelect.innerHTML = options;
-            if(absSelect) absSelect.innerHTML = options;
-        }
-
-        // --- ENGINES FONCTIONNELS ---
-
-        // 1. DASHBOARD COMPILATION
-        function updateDashboardMetrics() {
-            document.getElementById('dash-total-students').innerText = db.etudiants.length;
+        // --- LOGIQUE METIER MODULE 1 : DASHBOARD ---
+        function refreshDashboard() {
+            document.getElementById('card-count-students').innerText = storage.etudiants.length;
             
-            let nonJustifiees = db.absences.filter(a => !a.justifiee).length;
-            document.getElementById('dash-unjustified-abs').innerText = nonJustifiees;
+            let countUnjustified = storage.absences.filter(a => !a.justifiee).length;
+            document.getElementById('card-unjustified-abs').innerText = countUnjustified;
 
-            // Calcul de la Moyenne Générale Réelle
-            if(db.notes.length > 0) {
-                let total = db.notes.reduce((sum, n) => sum + parseFloat(n.valeur), 0);
-                document.getElementById('dash-general-average').innerText = (total / db.notes.length).toFixed(2) + " /20";
+            if(storage.notes.length > 0) {
+                let sum = storage.notes.reduce((acc, n) => acc + n.valeur, 0);
+                document.getElementById('card-global-avg').innerText = (sum / storage.notes.length).toFixed(2) + " /20";
             } else {
-                document.getElementById('dash-general-average').innerText = "0.00 /20";
+                document.getElementById('card-global-avg').innerText = "0.00";
             }
 
-            // Remplissage Tableau Classement Général
-            let rankingData = db.etudiants.map(e => {
-                let eNotes = db.notes.filter(n => n.id_etudiant == e.id);
-                let moy = eNotes.length > 0 ? (eNotes.reduce((s, n) => s + n.valeur, 0) / eNotes.length).toFixed(2) : "N/A";
-                return { name: e.nom + ' ' + e.prenom, moyenne: moy };
-            }).sort((a,b) => (b.moyenne === 'N/A' ? -1 : parseFloat(b.moyenne)) - (a.moyenne === 'N/A' ? -1 : parseFloat(a.moyenne)));
+            // Classement des étudiants selon leurs notes réelles
+            let rankingList = storage.etudiants.map(st => {
+                let currentNotes = storage.notes.filter(n => n.id_etudiant == st.id);
+                let avg = currentNotes.length > 0 ? (currentNotes.reduce((s, n) => s + n.valeur, 0) / currentNotes.length).toFixed(2) : "0.00";
+                return { name: st.nom + " " + st.prenom, average: parseFloat(avg) };
+            }).sort((x, y) => y.average - x.average);
 
-            let rankBody = document.getElementById('dash-ranking-table').querySelector('tbody');
-            rankBody.innerHTML = rankingData.map((r, i) => `
+            document.querySelector('#table-dash-ranking tbody').innerHTML = rankingList.map((item, idx) => `
                 <tr>
-                    <td><strong>#${i+1}</strong></td>
-                    <td>${r.name}</td>
-                    <td><span class="btn ${parseFloat(r.moyenne) >= 10 ? 'btn-success' : 'btn-secondary'}" style="padding: 2px 8px; font-size:0.85rem">${r.moyenne}</span></td>
+                    <td><strong>#${idx + 1}</strong></td>
+                    <td>${item.name}</td>
+                    <td><span class="pill pill-green">${item.average.toFixed(2)} /20</span></td>
                 </tr>
             `).join('');
 
-            // Remplissage Absences Récentes
-            let absBody = document.getElementById('dash-abs-table').querySelector('tbody');
-            absBody.innerHTML = db.absences.slice(-4).reverse().map(a => {
-                let e = db.etudiants.find(stud => stud.id == a.id_etudiant);
-                return `<tr><td>${e ? e.nom : 'Inconnu'}</td><td>${a.seance}</td></tr>`;
+            // Liste abrégée des absences du tableau de bord
+            document.querySelector('#table-dash-absences tbody').innerHTML = storage.absences.slice(-3).reverse().map(a => {
+                let st = storage.etudiants.find(s => s.id == a.id_etudiant);
+                return `<tr><td>${st ? st.nom : 'Externe'}</td><td>${a.seance}</td></tr>`;
             }).join('');
         }
 
-        // 2. ÉTUDIANTS (CRUD)
-        function renderStudents(list = db.etudiants) {
-            const tbody = document.querySelector('#students-table tbody');
-            tbody.innerHTML = list.map(e => `
+        // --- LOGIQUE METIER MODULE 2 : ÉTUDIANTS (CRUD) ---
+        function renderStudentsCRUD(dataSet = storage.etudiants) {
+            document.querySelector('#table-students-crud tbody').innerHTML = dataSet.map(st => `
                 <tr>
-                    <td>${e.id}</td>
-                    <td><strong>${e.nom}</strong></td>
-                    <td>${e.prenom}</td>
-                    <td>${e.email}</td>
-                    <td>${e.tel}</td>
+                    <td>SUP-${st.id}</td>
+                    <td><strong>${st.nom}</strong></td>
+                    <td>${st.prenom}</td>
+                    <td>${st.email}</td>
+                    <td>${st.tel}</td>
                     <td>
-                        <button class="btn btn-danger" style="padding:3px 8px; font-size:0.8rem;" onclick="deleteStudent(${e.id})">Supprimer</button>
+                        <button class="btn btn-danger" style="padding: 4px 10px; font-size: 0.75rem;" onclick="removeStudent(${st.id})">Radier</button>
                     </td>
                 </tr>
             `).join('');
         }
 
-        function addStudent(e) {
-            e.preventDefault();
-            let newId = db.etudiants.length > 0 ? Math.max(...db.etudiants.map(o => o.id)) + 1 : 1;
-            db.etudiants.push({
-                id: newId,
-                nom: document.getElementById('stud-nom').value,
-                prenom: document.getElementById('stud-prenom').value,
-                email: document.getElementById('stud-email').value,
-                tel: document.getElementById('stud-tel').value
+        function submitStudent(event) {
+            event.preventDefault();
+            let nextId = storage.etudiants.length > 0 ? Math.max(...storage.etudiants.map(s => s.id)) + 1 : 101;
+            storage.etudiants.push({
+                id: nextId,
+                nom: document.getElementById('in-stud-nom').value,
+                prenom: document.getElementById('in-stud-prenom').value,
+                email: document.getElementById('in-stud-email').value,
+                tel: document.getElementById('in-stud-tel').value
             });
-            saveDB(); renderStudents(); closeModal('student-modal');
-            document.getElementById('student-form').reset();
+            commit(); renderStudentsCRUD(); toggleModal('modal-student', false);
+            document.getElementById('form-add-student').reset();
         }
 
-        function deleteStudent(id) {
-            if(confirm("Voulez-vous vraiment retirer cet étudiant ?")) {
-                db.etudiants = db.etudiants.filter(e => e.id !== id);
-                db.notes = db.notes.filter(n => n.id_etudiant !== id);
-                db.absences = db.absences.filter(a => a.id_etudiant !== id);
-                saveDB(); renderStudents();
+        function removeStudent(id) {
+            if(confirm("Confirmez-vous la suppression définitive de cet étudiant et de ses données liées (Notes/Absences) ?")) {
+                storage.etudiants = storage.etudiants.filter(s => s.id !== id);
+                storage.notes = storage.notes.filter(n => n.id_etudiant !== id);
+                storage.absences = storage.absences.filter(a => a.id_etudiant !== id);
+                commit(); renderStudentsCRUD();
             }
         }
 
-        function filterStudents() {
-            let val = document.getElementById('search-student').value.toLowerCase();
-            let res = db.etudiants.filter(e => e.nom.toLowerCase().includes(val) || e.prenom.toLowerCase().includes(val));
-            renderStudents(res);
+        function searchStudent() {
+            let val = document.getElementById('search-stud-input').value.toLowerCase();
+            let filtered = storage.etudiants.filter(s => s.nom.toLowerCase().includes(val) || s.prenom.toLowerCase().includes(val));
+            renderStudentsCRUD(filtered);
         }
 
-        // 3. NOTES ACTIONS
-        function renderNotes() {
-            const tbody = document.querySelector('#notes-table tbody');
-            const filterMat = document.getElementById('filter-note-matiere').value;
-            
-            let filteredNotes = filterMat === 'all' ? db.notes : db.notes.filter(n => n.id_matiere === filterMat);
+        // --- LOGIQUE METIER MODULE 3 : NOTES ---
+        function renderNotesView() {
+            let filterMatiere = document.getElementById('select-filter-matiere').value;
+            let currentNotes = filterMatiere === 'all' ? storage.notes : storage.notes.filter(n => n.id_matiere === filterMatiere);
 
-            tbody.innerHTML = filteredNotes.map(n => {
-                let e = db.etudiants.find(stud => stud.id == n.id_etudiant);
+            document.querySelector('#table-notes tbody').innerHTML = currentNotes.map(n => {
+                let st = storage.etudiants.find(s => s.id == n.id_etudiant);
                 return `
                     <tr>
-                        <td><strong>${e ? e.nom + ' ' + e.prenom : 'Anonyme'}</strong></td>
-                        <td>${db.matieres[n.id_matiere]}</td>
+                        <td><strong>${st ? st.nom + " " + st.prenom : 'Inconnu'}</strong></td>
+                        <td>${storage.matieres[n.id_matiere]}</td>
                         <td>${n.type}</td>
-                        <td><strong>${n.valeur} /20</strong></td>
+                        <td><strong style="color:var(--primary-teal);">${n.valeur.toFixed(2)} /20</strong></td>
                         <td>${n.date}</td>
                     </tr>
                 `;
             }).join('');
         }
 
-        function addNote(e) {
-            e.preventDefault();
-            db.notes.push({
-                id_etudiant: parseInt(document.getElementById('note-student-select').value),
-                id_matiere: document.getElementById('note-matiere-select').value,
-                type: document.getElementById('note-type').value,
-                valeur: parseFloat(document.getElementById('note-valeur').value),
+        function submitNote(event) {
+            event.preventDefault();
+            storage.notes.push({
+                id_etudiant: parseInt(document.getElementById('select-note-student').value),
+                id_matiere: document.getElementById('select-note-matiere').value,
+                type: document.getElementById('select-note-type').value,
+                valeur: parseFloat(document.getElementById('in-note-valeur').value),
                 date: new Date().toISOString().split('T')[0]
             });
-            saveDB(); renderNotes(); closeModal('note-modal');
-            document.getElementById('note-form').reset();
+            commit(); renderNotesView(); toggleModal('modal-note', false);
+            document.getElementById('form-add-note').reset();
         }
 
-        // 4. ABSENCES ACTIONS
-        function renderAbsences() {
-            const tbody = document.querySelector('#absences-table tbody');
-            tbody.innerHTML = db.absences.map(a => {
-                let e = db.etudiants.find(stud => stud.id == a.id_etudiant);
+        // --- LOGIQUE METIER MODULE 4 : ABSENCES ---
+        function renderAbsencesView() {
+            document.querySelector('#table-absences tbody').innerHTML = storage.absences.map(a => {
+                let st = storage.etudiants.find(s => s.id == a.id_etudiant);
                 return `
                     <tr>
                         <td>${a.date}</td>
-                        <td><strong>${e ? e.nom + ' ' + e.prenom : 'Inconnu'}</strong></td>
+                        <td><strong>${st ? st.nom + " " + st.prenom : 'Inconnu'}</strong></td>
                         <td>${a.seance}</td>
                         <td>
-                            <span class="btn ${a.justifiee ? 'btn-success' : 'btn-secondary'}" style="padding:2px 8px; font-size:0.8rem;">
+                            <span class="pill ${a.justifiee ? 'pill-green' : 'pill-red'}">
                                 ${a.justifiee ? 'Justifiée' : 'Non Justifiée'}
                             </span>
                         </td>
                         <td>
-                            ${!a.justifiee ? `<button class="btn btn-primary" style="padding:2px 6px; font-size:0.75rem;" onclick="toggleJustify(${a.id})">Justifier en 1-clic</button>` : '---'}
+                            ${!a.justifiee ? `<button class="btn btn-primary" style="padding:4px 8px; font-size:0.75rem;" onclick="validateJustification(${a.id})">Justifier en 1 clic</button>` : '---'}
                         </td>
                     </tr>
                 `;
             }).join('');
         }
 
-        function addAbsence(e) {
-            e.preventDefault();
-            let newId = db.absences.length > 0 ? Math.max(...db.absences.map(o => o.id)) + 1 : 1;
-            db.absences.push({
-                id: newId,
-                id_etudiant: parseInt(document.getElementById('abs-student-select').value),
-                seance: document.getElementById('abs-matiere').value,
+        function submitAbsence(event) {
+            event.preventDefault();
+            let nextAbsId = storage.absences.length > 0 ? Math.max(...storage.absences.map(a => a.id)) + 1 : 1;
+            storage.absences.push({
+                id: nextAbsId,
+                id_etudiant: parseInt(document.getElementById('select-abs-student').value),
+                seance: document.getElementById('select-abs-matiere').value,
                 date: new Date().toISOString().split('T')[0],
                 justifiee: false
             });
-            saveDB(); renderAbsences(); closeModal('absence-modal');
+            commit(); renderAbsencesView(); toggleModal('modal-abs', false);
         }
 
-        function toggleJustify(id) {
-            let abs = db.absences.find(a => a.id === id);
-            if(abs) { abs.justifiee = true; saveDB(); renderAbsences(); }
+        function validateJustification(id) {
+            let targetAbs = storage.absences.find(a => a.id === id);
+            if(targetAbs) {
+                targetAbs.justifiee = true;
+                commit();
+                renderAbsencesView();
+            }
         }
 
-        // --- INITIALISATION AU CHARGEMENT ---
+        // --- DEMARRAGE SYSTEME ---
         window.onload = function() {
-            updateDashboardMetrics();
+            refreshDashboard();
         };
     </script>
 </body>
