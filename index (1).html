@@ -6,9 +6,7 @@
 <title>Gestion de Classe — SUP MTI</title>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
 <style>
-/* ═══════════════════════════════════════════════════════
-   VARIABLES & RESET
-═══════════════════════════════════════════════════════ */
+
 :root {
   --navy:      #1B2A4A;
   --navy2:     #243557;
@@ -43,9 +41,6 @@ body {
   display: flex;
 }
 
-/* ═══════════════════════════════════════════════════════
-   SIDEBAR
-═══════════════════════════════════════════════════════ */
 .sidebar {
   width: 240px; flex-shrink: 0;
   background: var(--navy);
@@ -100,9 +95,6 @@ body {
   line-height: 1.6;
 }
 
-/* ═══════════════════════════════════════════════════════
-   MAIN
-═══════════════════════════════════════════════════════ */
 .main { flex: 1; overflow-y: auto; }
 .topbar {
   background: var(--white); border-bottom: 1px solid var(--gray-100);
@@ -119,10 +111,7 @@ body {
 .page.active { display: block; }
 @keyframes fadeIn { from { opacity:0; transform:translateY(4px); } to { opacity:1; transform:translateY(0); } }
 
-/* ═══════════════════════════════════════════════════════
-   COMPONENTS
-═══════════════════════════════════════════════════════ */
-/* Stats grid */
+
 .stats-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 1rem; margin-bottom: 1.5rem; }
 .stat-card {
   background: var(--white); border-radius: var(--radius);
@@ -161,7 +150,6 @@ body {
 .card-title svg { color: var(--blue); }
 .card-body { padding: 1.25rem; }
 
-/* Table */
 .tbl-wrap { overflow-x: auto; }
 table { width: 100%; border-collapse: collapse; font-size: 13px; }
 thead th {
@@ -174,7 +162,6 @@ tbody td { padding: 11px 14px; border-bottom: 1px solid var(--gray-50); color: v
 tbody tr:last-child td { border-bottom: none; }
 tbody tr:hover { background: var(--blue-pale); }
 
-/* Badges */
 .badge {
   display: inline-flex; align-items: center; gap: 4px;
   padding: 3px 10px; border-radius: 20px;
@@ -188,7 +175,6 @@ tbody tr:hover { background: var(--blue-pale); }
 .badge-navy   { background: #E8EDF5; color: var(--navy); }
 .badge-purple { background: #EDE9FE; color: #5B21B6; }
 
-/* Buttons */
 .btn {
   display: inline-flex; align-items: center; gap: 6px;
   padding: 8px 16px; border-radius: var(--radius-sm);
@@ -220,7 +206,6 @@ tbody tr:hover { background: var(--blue-pale); }
 }
 .form-actions { display: flex; gap: .75rem; align-items: center; padding-top: .75rem; flex-wrap: wrap; }
 
-/* Modal */
 .modal-overlay {
   display: none; position: fixed; inset: 0;
   background: rgba(15,23,42,.5); backdrop-filter: blur(4px);
@@ -263,13 +248,11 @@ tbody tr:hover { background: var(--blue-pale); }
   display: flex; align-items: center; justify-content: center; flex-shrink: 0;
 }
 
-/* Progress bar */
 .prog-wrap { background: var(--gray-100); border-radius: 20px; height: 7px; overflow: hidden; }
 .prog-bar  { height: 100%; border-radius: 20px; background: var(--blue); transition: width .4s; }
 .prog-bar.warn   { background: var(--orange); }
 .prog-bar.danger { background: var(--red); }
 
-/* Timetable */
 .timetable-wrap { overflow-x: auto; }
 .timetable { display: grid; grid-template-columns: 72px repeat(5,1fr); gap: 3px; font-size: 12px; min-width: 600px; }
 .tt-h { background: var(--navy); color: #fff; padding: 8px; text-align: center;
@@ -284,35 +267,28 @@ tbody tr:hover { background: var(--blue-pale); }
 .tt-event strong { display: block; font-size: 10.5px; color: var(--navy); font-weight: 700; }
 .tt-event span   { display: block; font-size: 9.5px; color: var(--gray-400); }
 
-/* Filter bar */
 .filter-bar { display: flex; gap: .75rem; flex-wrap: wrap; align-items: flex-end; margin-bottom: 1.25rem; }
 .filter-bar .form-group { min-width: 180px; }
 
-/* Page header */
 .page-hd { display: flex; align-items: center; justify-content: space-between;
   margin-bottom: 1.5rem; flex-wrap: wrap; gap: 1rem; }
 .page-hd h1 { font-size: 20px; font-weight: 800; color: var(--navy); }
 .page-hd p  { font-size: 12px; color: var(--gray-400); margin-top: 2px; }
 
-/* Mono */
 .mono { font-family: 'JetBrains Mono', monospace; font-size: 12px; }
 
-/* Grid 2 col */
 .grid-2 { display: grid; grid-template-columns: 2fr 1fr; gap: 1.25rem; }
 .grid-2-eq { display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem; }
 
-/* Empty state */
 .empty { text-align: center; padding: 3rem 1rem; color: var(--gray-400); }
 .empty svg { margin: 0 auto 1rem; display: block; opacity: .3; }
 .empty p { font-size: 14px; }
 
-/* Scrollbar */
 ::-webkit-scrollbar { width: 6px; height: 6px; }
 ::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb { background: var(--gray-100); border-radius: 3px; }
 ::-webkit-scrollbar-thumb:hover { background: var(--gray-400); }
 
-/* Responsive */
 @media (max-width: 900px) {
   .sidebar { width: 60px; }
   .sidebar .logo-text, .sidebar .nav-item span,
@@ -328,9 +304,6 @@ tbody tr:hover { background: var(--blue-pale); }
 </head>
 <body>
 
-<!-- ════════════════════════════════════════
-     SIDEBAR
-════════════════════════════════════════ -->
 <aside class="sidebar">
   <div class="sidebar-logo">
     <div class="logo-box">SUP<br>MTI</div>
@@ -383,9 +356,6 @@ tbody tr:hover { background: var(--blue-pale); }
   </div>
 </aside>
 
-<!-- ════════════════════════════════════════
-     MAIN CONTENT
-════════════════════════════════════════ -->
 <div class="main">
   <div class="topbar">
     <div>
@@ -397,10 +367,9 @@ tbody tr:hover { background: var(--blue-pale); }
     </div>
   </div>
 
-  <!-- FLASH -->
   <div style="padding: 0 2rem;" id="flash-zone"></div>
 
-  <!-- ── DASHBOARD ──────────────────────────────── -->
+ 
   <div class="page active" id="page-dashboard">
     <div class="stats-grid" id="dash-stats"></div>
     <div class="grid-2">
@@ -655,13 +624,9 @@ tbody tr:hover { background: var(--blue-pale); }
       </div>
     </div>
   </div>
-</div><!-- /main -->
+</div>
 
-<!-- ════════════════════════════════════════
-     MODALS
-════════════════════════════════════════ -->
 
-<!-- Modal Étudiant -->
 <div class="modal-overlay" id="modal-etudiant">
   <div class="modal">
     <div class="modal-header">
@@ -802,16 +767,14 @@ tbody tr:hover { background: var(--blue-pale); }
 </div>
 
 <script>
-// ════════════════════════════════════════════════════════════════════
-// DATABASE — localStorage
-// ════════════════════════════════════════════════════════════════════
+
 const DB = {
   get: k => JSON.parse(localStorage.getItem('gc_'+k) || '[]'),
   set: (k,v) => localStorage.setItem('gc_'+k, JSON.stringify(v)),
   nextId: k => { const d=DB.get(k); return d.length ? Math.max(...d.map(x=>x.id))+1 : 1; }
 };
 
-// Seed demo data si vide
+
 function seedDemo() {
   if (DB.get('etudiants').length) return;
 
@@ -967,10 +930,6 @@ function populateSelects() {
     });
   });
 }
-
-// ════════════════════════════════════════════════════════════════════
-// DASHBOARD
-// ════════════════════════════════════════════════════════════════════
 function renderDashboard() {
   const etudiants = DB.get('etudiants');
   const matieres  = DB.get('matieres');
@@ -1271,9 +1230,6 @@ function deleteNote(id) {
   flash('Note supprimée.'); renderNotes(); renderMoyennes(); renderDashboard();
 }
 
-// ════════════════════════════════════════════════════════════════════
-// ABSENCES
-// ════════════════════════════════════════════════════════════════════
 function renderAbsences() {
   const fE = document.getElementById('filter-abs-etudiant')?.value;
   const fS = document.getElementById('filter-abs-statut')?.value;
@@ -1453,9 +1409,6 @@ function deleteEmploi(id) {
   flash('Séance supprimée.'); renderEmploi(); renderTimetable();
 }
 
-// ════════════════════════════════════════════════════════════════════
-// SCHEMA
-// ════════════════════════════════════════════════════════════════════
 function renderSchema() {
   const e = DB.get('etudiants').length;
   const m = DB.get('matieres').length;
@@ -1480,9 +1433,6 @@ function renderSchema() {
   `;
 }
 
-// ════════════════════════════════════════════════════════════════════
-// INIT
-// ════════════════════════════════════════════════════════════════════
 function init() {
   seedDemo();
   // Date
