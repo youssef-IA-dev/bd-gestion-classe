@@ -1,1452 +1,828 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Gestion de Classe — SUP MTI</title>
-<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
-<style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestion de Classe - SUP MTI Béni Mellal</title>
+    <style>
+        /* --- CONFIGURATION GLOBALE & VARIABLES --- */
+        :root {
+            --primary-color: #007A78; /* Couleur SUP MTI Teal */
+            --secondary-color: #E30613; /* Couleur SUP MTI Rouge */
+            --dark-color: #2D3748;
+            --light-color: #F7FAFC;
+            --white: #FFFFFF;
+            --gray-border: #E2E8F0;
+            --success-color: #48BB78;
+            --warning-color: #ECC94B;
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
 
-:root {
-  --navy:      #1B2A4A;
-  --navy2:     #243557;
-  --navy3:     #2D4068;
-  --blue:      #2563EB;
-  --blue2:     #3B82F6;
-  --blue-light:#DBEAFE;
-  --blue-pale: #EFF6FF;
-  --white:     #FFFFFF;
-  --off:       #F8FAFC;
-  --gray-50:   #F1F5F9;
-  --gray-100:  #E2E8F0;
-  --gray-400:  #94A3B8;
-  --gray-600:  #475569;
-  --gray-900:  #0F172A;
-  --orange:    #F59E0B;
-  --green:     #10B981;
-  --red:       #EF4444;
-  --radius:    12px;
-  --radius-sm: 8px;
-  --shadow:    0 1px 3px rgba(27,42,74,.08), 0 1px 2px rgba(27,42,74,.05);
-  --shadow-md: 0 4px 16px rgba(27,42,74,.10), 0 2px 6px rgba(27,42,74,.06);
-  --shadow-lg: 0 8px 32px rgba(27,42,74,.14), 0 4px 12px rgba(27,42,74,.08);
-}
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-html { font-size: 15px; scroll-behavior: smooth; }
-body {
-  font-family: 'Plus Jakarta Sans', sans-serif;
-  background: var(--off);
-  color: var(--gray-900);
-  min-height: 100vh;
-  display: flex;
-}
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
 
-.sidebar {
-  width: 240px; flex-shrink: 0;
-  background: var(--navy);
-  height: 100vh; position: sticky; top: 0;
-  display: flex; flex-direction: column;
-  box-shadow: 4px 0 24px rgba(27,42,74,.2);
-  z-index: 100;
-}
-.sidebar-logo {
-  padding: 1.5rem 1.25rem 1rem;
-  border-bottom: 1px solid rgba(255,255,255,.08);
-  display: flex; align-items: center; gap: 12px;
-}
-.logo-box {
-  width: 42px; height: 42px;
-  background: var(--blue);
-  border-radius: 10px;
-  display: flex; flex-direction: column;
-  align-items: center; justify-content: center;
-  font-weight: 800; font-size: 11px;
-  color: #fff; line-height: 1.2;
-  letter-spacing: 1.5px;
-  flex-shrink: 0;
-}
-.logo-text .brand { font-size: 14px; font-weight: 700; color: #fff; display: block; }
-.logo-text .sub   { font-size: 10px; color: rgba(255,255,255,.4); letter-spacing: .5px; }
+        body {
+            background-color: var(--light-color);
+            color: var(--dark-color);
+            display: flex;
+            min-height: 100vh;
+        }
 
-.sidebar-nav { flex: 1; padding: 1rem .75rem; display: flex; flex-direction: column; gap: 3px; }
-.nav-label { font-size: 10px; font-weight: 700; color: rgba(255,255,255,.3);
-  letter-spacing: 2px; padding: .5rem .75rem .25rem; text-transform: uppercase; margin-top: .5rem; }
-.nav-item {
-  display: flex; align-items: center; gap: 10px;
-  padding: 9px 12px; border-radius: var(--radius-sm);
-  color: rgba(255,255,255,.6); font-size: 13px; font-weight: 500;
-  cursor: pointer; transition: all .15s; border: none; background: none;
-  text-align: left; width: 100%;
-}
-.nav-item:hover { background: rgba(255,255,255,.07); color: #fff; }
-.nav-item.active { background: var(--blue); color: #fff; }
-.nav-item svg { flex-shrink: 0; }
-.nav-badge {
-  margin-left: auto; background: rgba(255,255,255,.15);
-  color: rgba(255,255,255,.8); font-size: 10px; font-weight: 700;
-  padding: 2px 7px; border-radius: 20px; min-width: 20px; text-align: center;
-}
-.nav-item.active .nav-badge { background: rgba(255,255,255,.25); }
+        /* --- LOGO SIMULÉ SUP MTI --- */
+        .logo-container {
+            padding: 15px;
+            text-align: center;
+            background: white;
+            border-bottom: 2px solid var(--gray-border);
+            margin-bottom: 20px;
+            border-radius: 8px;
+        }
+        .logo-text-top {
+            font-size: 24px;
+            font-weight: 800;
+            color: var(--primary-color);
+            letter-spacing: 1px;
+        }
+        .logo-text-bottom {
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--secondary-color);
+            letter-spacing: 2px;
+            margin-top: -5px;
+        }
 
-.sidebar-footer {
-  padding: 1rem 1.25rem;
-  border-top: 1px solid rgba(255,255,255,.08);
-  font-size: 11px; color: rgba(255,255,255,.3);
-  line-height: 1.6;
-}
+        /* --- SIDEBAR BARRE NAV --- */
+        aside {
+            width: 260px;
+            background-color: var(--white);
+            border-right: 1px solid var(--gray-border);
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            position: fixed;
+            height: 100vh;
+        }
 
-.main { flex: 1; overflow-y: auto; }
-.topbar {
-  background: var(--white); border-bottom: 1px solid var(--gray-100);
-  padding: .875rem 2rem;
-  display: flex; align-items: center; justify-content: space-between;
-  position: sticky; top: 0; z-index: 50;
-  box-shadow: var(--shadow);
-}
-.topbar-title { font-size: 16px; font-weight: 700; color: var(--navy); }
-.topbar-sub   { font-size: 12px; color: var(--gray-400); margin-top: 1px; }
-.topbar-right { display: flex; align-items: center; gap: .75rem; }
+        .nav-links {
+            list-style: none;
+            flex-grow: 1;
+        }
 
-.page { padding: 1.75rem 2rem; display: none; animation: fadeIn .2s ease; }
-.page.active { display: block; }
-@keyframes fadeIn { from { opacity:0; transform:translateY(4px); } to { opacity:1; transform:translateY(0); } }
+        .nav-links li {
+            margin-bottom: 10px;
+        }
 
+        .nav-links a {
+            display: flex;
+            align-items: center;
+            padding: 12px 15px;
+            color: var(--dark-color);
+            text-decoration: none;
+            font-weight: 600;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
 
-.stats-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 1rem; margin-bottom: 1.5rem; }
-.stat-card {
-  background: var(--white); border-radius: var(--radius);
-  border: 1px solid var(--gray-100); padding: 1.25rem;
-  display: flex; align-items: center; gap: 1rem;
-  box-shadow: var(--shadow);
-  transition: transform .15s, box-shadow .15s;
-}
-.stat-card:hover { transform: translateY(-2px); box-shadow: var(--shadow-md); }
-.stat-icon {
-  width: 48px; height: 48px; border-radius: var(--radius-sm);
-  display: flex; align-items: center; justify-content: center;
-  font-size: 22px; flex-shrink: 0;
-}
-.stat-icon.blue   { background: var(--blue-light); }
-.stat-icon.navy   { background: #E8EDF5; }
-.stat-icon.orange { background: #FEF3C7; }
-.stat-icon.red    { background: #FEE2E2; }
-.stat-icon.green  { background: #D1FAE5; }
-.stat-val  { font-size: 1.7rem; font-weight: 800; color: var(--navy); line-height: 1; }
-.stat-lbl  { font-size: 12px; color: var(--gray-400); margin-top: 3px; }
+        .nav-links a:hover, .nav-links li.active a {
+            background-color: var(--primary-color);
+            color: var(--white);
+        }
 
-/* Cards */
-.card {
-  background: var(--white); border-radius: var(--radius);
-  border: 1px solid var(--gray-100); box-shadow: var(--shadow);
-  overflow: hidden;
-}
-.card-header {
-  padding: .875rem 1.25rem;
-  border-bottom: 1px solid var(--gray-100);
-  display: flex; align-items: center; justify-content: space-between; gap: 1rem;
-}
-.card-title { font-size: 14px; font-weight: 700; color: var(--navy);
-  display: flex; align-items: center; gap: 8px; }
-.card-title svg { color: var(--blue); }
-.card-body { padding: 1.25rem; }
+        .nav-links a .icon {
+            margin-right: 12px;
+            font-size: 1.2rem;
+        }
 
-.tbl-wrap { overflow-x: auto; }
-table { width: 100%; border-collapse: collapse; font-size: 13px; }
-thead th {
-  background: var(--gray-50); padding: 10px 14px;
-  text-align: left; font-size: 10.5px; font-weight: 700;
-  letter-spacing: .8px; text-transform: uppercase; color: var(--gray-400);
-  border-bottom: 1px solid var(--gray-100); white-space: nowrap;
-}
-tbody td { padding: 11px 14px; border-bottom: 1px solid var(--gray-50); color: var(--gray-600); vertical-align: middle; }
-tbody tr:last-child td { border-bottom: none; }
-tbody tr:hover { background: var(--blue-pale); }
+        footer {
+            font-size: 0.8rem;
+            color: #A0AEC0;
+            text-align: center;
+            border-top: 1px solid var(--gray-border);
+            padding-top: 15px;
+        }
 
-.badge {
-  display: inline-flex; align-items: center; gap: 4px;
-  padding: 3px 10px; border-radius: 20px;
-  font-size: 11px; font-weight: 600; white-space: nowrap;
-}
-.badge-blue   { background: var(--blue-light); color: #1D4ED8; }
-.badge-orange { background: #FEF3C7; color: #92400E; }
-.badge-green  { background: #D1FAE5; color: #065F46; }
-.badge-red    { background: #FEE2E2; color: #991B1B; }
-.badge-gray   { background: var(--gray-50); color: var(--gray-600); border: 1px solid var(--gray-100); }
-.badge-navy   { background: #E8EDF5; color: var(--navy); }
-.badge-purple { background: #EDE9FE; color: #5B21B6; }
+        /* --- ESPACE PRINCIPAL --- */
+        main {
+            margin-left: 260px;
+            flex-grow: 1;
+            padding: 40px;
+            overflow-y: auto;
+        }
 
-.btn {
-  display: inline-flex; align-items: center; gap: 6px;
-  padding: 8px 16px; border-radius: var(--radius-sm);
-  font-size: 13px; font-weight: 600;
-  font-family: 'Plus Jakarta Sans', sans-serif;
-  cursor: pointer; border: 1px solid transparent;
-  text-decoration: none; transition: all .15s;
-}
-.btn-primary { background: var(--blue); color: #fff; border-color: var(--blue); }
-.btn-primary:hover { background: #1D4ED8; }
-.btn-outline { background: var(--white); color: var(--gray-600); border-color: var(--gray-100); }
-.btn-outline:hover { background: var(--gray-50); border-color: var(--gray-400); }
-.btn-danger  { background: var(--red); color: #fff; }
-.btn-danger:hover { background: #DC2626; }
-.btn-sm { padding: 5px 10px; font-size: 12px; border-radius: 6px; }
-.btn-icon { padding: 7px; border-radius: 6px; }
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            border-bottom: 2px solid var(--primary-color);
+            padding-bottom: 15px;
+        }
 
-/* Forms */
-.form-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; }
-.form-group { display: flex; flex-direction: column; gap: 5px; }
-.form-group label { font-size: 12px; font-weight: 600; color: var(--gray-600); }
-.form-group input, .form-group select, .form-group textarea {
-  padding: 9px 12px; border: 1.5px solid var(--gray-100);
-  border-radius: var(--radius-sm); font-family: inherit; font-size: 13px;
-  color: var(--gray-900); background: var(--white); outline: none; transition: border-color .15s, box-shadow .15s;
-}
-.form-group input:focus, .form-group select:focus {
-  border-color: var(--blue); box-shadow: 0 0 0 3px rgba(37,99,235,.1);
-}
-.form-actions { display: flex; gap: .75rem; align-items: center; padding-top: .75rem; flex-wrap: wrap; }
+        .user-profile {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
 
-.modal-overlay {
-  display: none; position: fixed; inset: 0;
-  background: rgba(15,23,42,.5); backdrop-filter: blur(4px);
-  z-index: 500; align-items: center; justify-content: center; padding: 1rem;
-}
-.modal-overlay.open { display: flex; }
-.modal {
-  background: var(--white); border-radius: var(--radius);
-  width: 100%; max-width: 540px;
-  box-shadow: var(--shadow-lg); overflow: hidden;
-  animation: modalIn .2s ease;
-}
-@keyframes modalIn { from { opacity:0; transform:scale(.96); } to { opacity:1; transform:scale(1); } }
-.modal-header {
-  background: var(--navy); padding: 1rem 1.25rem;
-  display: flex; align-items: center; justify-content: space-between;
-}
-.modal-header h3 { font-size: 15px; font-weight: 700; color: var(--white);
-  display: flex; align-items: center; gap: 8px; }
-.modal-close { background: none; border: none; color: rgba(255,255,255,.5);
-  font-size: 20px; cursor: pointer; line-height: 1; padding: 2px 6px; border-radius: 4px;
-  transition: color .15s; }
-.modal-close:hover { color: #fff; }
-.modal-body { padding: 1.25rem; }
+        .avatar-initials {
+            width: 40px;
+            height: 40px;
+            background-color: var(--secondary-color);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
 
-/* Alert */
-.alert {
-  display: flex; align-items: center; gap: 10px;
-  padding: 12px 16px; border-radius: var(--radius-sm);
-  font-size: 13px; margin-bottom: 1.25rem; animation: fadeIn .2s;
-}
-.alert-success { background: #D1FAE5; color: #065F46; border: 1px solid #6EE7B7; }
-.alert-error   { background: #FEE2E2; color: #991B1B; border: 1px solid #FCA5A5; }
+        /* --- SECTIONS (Pages) --- */
+        .page-section {
+            display: none;
+        }
 
-/* Avatar */
-.avatar {
-  width: 36px; height: 36px; border-radius: 50%;
-  background: var(--blue-light); color: var(--blue);
-  font-weight: 700; font-size: 12px;
-  display: flex; align-items: center; justify-content: center; flex-shrink: 0;
-}
+        .page-section.active {
+            display: block;
+        }
 
-.prog-wrap { background: var(--gray-100); border-radius: 20px; height: 7px; overflow: hidden; }
-.prog-bar  { height: 100%; border-radius: 20px; background: var(--blue); transition: width .4s; }
-.prog-bar.warn   { background: var(--orange); }
-.prog-bar.danger { background: var(--red); }
+        /* --- CARDS & GRID --- */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
 
-.timetable-wrap { overflow-x: auto; }
-.timetable { display: grid; grid-template-columns: 72px repeat(5,1fr); gap: 3px; font-size: 12px; min-width: 600px; }
-.tt-h { background: var(--navy); color: #fff; padding: 8px; text-align: center;
-  border-radius: 6px; font-weight: 700; font-size: 11px; letter-spacing: .5px; }
-.tt-time { background: var(--gray-50); color: var(--gray-400); padding: 8px 4px;
-  text-align: center; font-size: 10px; border-radius: 4px;
-  display: flex; align-items: center; justify-content: center; font-family: 'JetBrains Mono', monospace; }
-.tt-cell { background: var(--white); border: 1px solid var(--gray-100); border-radius: 6px;
-  padding: 6px; min-height: 56px; }
-.tt-event { background: var(--blue-light); border-left: 3px solid var(--blue);
-  padding: 5px 7px; border-radius: 4px; margin-bottom: 3px; }
-.tt-event strong { display: block; font-size: 10.5px; color: var(--navy); font-weight: 700; }
-.tt-event span   { display: block; font-size: 9.5px; color: var(--gray-400); }
+        .card {
+            background: var(--white);
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: var(--shadow);
+            border-left: 5px solid var(--primary-color);
+        }
 
-.filter-bar { display: flex; gap: .75rem; flex-wrap: wrap; align-items: flex-end; margin-bottom: 1.25rem; }
-.filter-bar .form-group { min-width: 180px; }
+        .card.red-brand {
+            border-left: 5px solid var(--secondary-color);
+        }
 
-.page-hd { display: flex; align-items: center; justify-content: space-between;
-  margin-bottom: 1.5rem; flex-wrap: wrap; gap: 1rem; }
-.page-hd h1 { font-size: 20px; font-weight: 800; color: var(--navy); }
-.page-hd p  { font-size: 12px; color: var(--gray-400); margin-top: 2px; }
+        .card h3 {
+            font-size: 0.9rem;
+            color: #718096;
+            text-transform: uppercase;
+            margin-bottom: 5px;
+        }
 
-.mono { font-family: 'JetBrains Mono', monospace; font-size: 12px; }
+        .card .value {
+            font-size: 1.8rem;
+            font-weight: bold;
+        }
 
-.grid-2 { display: grid; grid-template-columns: 2fr 1fr; gap: 1.25rem; }
-.grid-2-eq { display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem; }
+        /* --- TABLES & FORMULAIRES --- */
+        .content-box {
+            background: var(--white);
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: var(--shadow);
+            margin-bottom: 30px;
+        }
 
-.empty { text-align: center; padding: 3rem 1rem; color: var(--gray-400); }
-.empty svg { margin: 0 auto 1rem; display: block; opacity: .3; }
-.empty p { font-size: 14px; }
+        .box-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
 
-::-webkit-scrollbar { width: 6px; height: 6px; }
-::-webkit-scrollbar-track { background: transparent; }
-::-webkit-scrollbar-thumb { background: var(--gray-100); border-radius: 3px; }
-::-webkit-scrollbar-thumb:hover { background: var(--gray-400); }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+        }
 
-@media (max-width: 900px) {
-  .sidebar { width: 60px; }
-  .sidebar .logo-text, .sidebar .nav-item span,
-  .sidebar .nav-label, .sidebar-footer,
-  .sidebar .nav-badge { display: none; }
-  .nav-item { justify-content: center; }
-  .stats-grid { grid-template-columns: repeat(2,1fr); }
-  .grid-2, .grid-2-eq { grid-template-columns: 1fr; }
-  .page { padding: 1rem; }
-  .topbar { padding: .75rem 1rem; }
-}
-</style>
+        th, td {
+            padding: 12px 15px;
+            border-bottom: 1px solid var(--gray-border);
+        }
+
+        th {
+            background-color: #EDF2F7;
+            font-weight: 600;
+        }
+
+        /* --- BOUTONS & FORMULAIRES --- */
+        .btn {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: opacity 0.2s;
+        }
+
+        .btn:hover {
+            opacity: 0.9;
+        }
+
+        .btn-primary { background-color: var(--primary-color); color: white; }
+        .btn-secondary { background-color: var(--secondary-color); color: white; }
+        .btn-success { background-color: var(--success-color); color: white; }
+        .btn-danger { background-color: #E53E3E; color: white; }
+
+        .form-inline {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .form-control {
+            padding: 8px 12px;
+            border: 1px solid var(--gray-border);
+            border-radius: 6px;
+            outline: none;
+        }
+
+        .form-control:focus {
+            border-color: var(--primary-color);
+        }
+
+        /* --- GRID EMPLOI DU TEMPS --- */
+        .timetable-grid {
+            display: grid;
+            grid-template-columns: 100px repeat(5, 1fr);
+            gap: 10px;
+            background: #EDF2F7;
+            padding: 10px;
+            border-radius: 10px;
+        }
+
+        .timetable-header {
+            font-weight: bold;
+            text-align: center;
+            background: var(--primary-color);
+            color: white;
+            padding: 10px;
+            border-radius: 4px;
+        }
+
+        .time-slot {
+            background: #CBD5E0;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 15px 5px;
+            border-radius: 4px;
+        }
+
+        .course-card {
+            background: white;
+            border: 1px solid var(--gray-border);
+            border-top: 4px solid var(--secondary-color);
+            padding: 10px;
+            border-radius: 4px;
+            min-height: 80px;
+            font-size: 0.85rem;
+        }
+
+        .course-title { font-weight: bold; color: var(--dark-color); }
+        .course-prof { color: #4A5568; font-style: italic; }
+        .course-room { font-size: 0.75rem; color: #718096; margin-top: 5px; }
+
+        /* Modal simple style */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.5);
+            justify-content: center; align-items: center;
+            z-index: 1000;
+        }
+        .modal-content {
+            background: white; padding: 30px; border-radius: 8px; width: 450px;
+            box-shadow: var(--shadow);
+        }
+        .modal-content h3 { margin-bottom: 20px; color: var(--primary-color); }
+        .form-group { margin-bottom: 15px; display: flex; flex-direction: column; gap: 5px; }
+    </style>
 </head>
 <body>
 
-<aside class="sidebar">
-  <div class="sidebar-logo">
-    <div class="logo-box">SUP<br>MTI</div>
-    <div class="logo-text">
-      <span class="brand">Gestion Classe</span>
-      <span class="sub">SUP MTI · ISI 2</span>
-    </div>
-  </div>
-
-  <nav class="sidebar-nav">
-    <span class="nav-label">Navigation</span>
-    <button class="nav-item active" onclick="showPage('dashboard',this)">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
-      <span>Tableau de bord</span>
-    </button>
-    <button class="nav-item" onclick="showPage('etudiants',this)">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-      <span>Étudiants</span>
-      <span class="nav-badge" id="nb-etudiants">0</span>
-    </button>
-    <button class="nav-item" onclick="showPage('matieres',this)">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
-      <span>Matières</span>
-      <span class="nav-badge" id="nb-matieres">0</span>
-    </button>
-    <button class="nav-item" onclick="showPage('notes',this)">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
-      <span>Notes</span>
-      <span class="nav-badge" id="nb-notes">0</span>
-    </button>
-    <button class="nav-item" onclick="showPage('absences',this)">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
-      <span>Absences</span>
-      <span class="nav-badge" id="nb-absences">0</span>
-    </button>
-    <button class="nav-item" onclick="showPage('emploi',this)">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-      <span>Emploi du temps</span>
-    </button>
-    <span class="nav-label" style="margin-top:1rem;">Base de données</span>
-    <button class="nav-item" onclick="showPage('schema',this)">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg>
-      <span>Schéma BD</span>
-    </button>
-  </nav>
-
-  <div class="sidebar-footer">
-    Youssef Lachhab<br>
-    2ème année ISI · 2025/2026
-  </div>
-</aside>
-
-<div class="main">
-  <div class="topbar">
-    <div>
-      <div class="topbar-title" id="topbar-title">Tableau de bord</div>
-      <div class="topbar-sub">Module : Bases de données & SI — SUP MTI</div>
-    </div>
-    <div class="topbar-right">
-      <span id="topbar-date" style="font-size:12px;color:var(--gray-400);"></span>
-    </div>
-  </div>
-
-  <div style="padding: 0 2rem;" id="flash-zone"></div>
-
- 
-  <div class="page active" id="page-dashboard">
-    <div class="stats-grid" id="dash-stats"></div>
-    <div class="grid-2">
-      <div class="card">
-        <div class="card-header">
-          <div class="card-title">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
-            Classement par moyenne
-          </div>
-          <span class="badge badge-blue" id="dash-moy-gen"></span>
+    <aside>
+        <div class="logo-container">
+            <div class="logo-text-top">SUP MTI</div>
+            <div class="logo-text-bottom">BÉNI MELLAL</div>
         </div>
-        <div class="tbl-wrap"><table>
-          <thead><tr><th>#</th><th>Étudiant</th><th>Moyenne</th><th>Notes</th></tr></thead>
-          <tbody id="dash-top"></tbody>
-        </table></div>
-      </div>
-      <div class="card">
-        <div class="card-header">
-          <div class="card-title">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
-            Absences récentes
-          </div>
-          <button class="btn btn-outline btn-sm" onclick="showPage('absences',null)">Voir tout</button>
+        <ul class="nav-links">
+            <li class="active" onclick="switchPage('dashboard')"><a href="#"><span class="icon">🏠</span>Tableau de bord</a></li>
+            <li onclick="switchPage('students')"><a href="#"><span class="icon">👥</span>Étudiants</a></li>
+            <li onclick="switchPage('notes')"><a href="#"><span class="icon">📄</span>Notes</a></li>
+            <li onclick="switchPage('absences')"><a href="#"><span class="icon">📅</span>Absences</a></li>
+            <li onclick="switchPage('timetable')"><a href="#"><span class="icon">🕒</span>Emploi du Temps</a></li>
+        </ul>
+        <footer>
+            <p><strong>Youssef Lachhab</strong></p>
+            <p>2ème année ISI · 2025/2026</p>
+        </footer>
+    </aside>
+
+    <main>
+        <header>
+            <div>
+                <h1 id="page-title">Tableau de bord</h1>
+                <p style="color: #718096;">Système de Gestion de Classe (Merise MLD)</p>
+            </div>
+            <div class="user-profile">
+                <span style="font-weight: 600;">Formateur Admin</span>
+                <div class="avatar-initials">YL</div>
+            </div>
+        </header>
+
+        <section id="dashboard" class="page-section active">
+            <div class="stats-grid">
+                <div class="card">
+                    <h3>Total Étudiants</h3>
+                    <div class="value" id="dash-total-students">0</div>
+                </div>
+                <div class="card red-brand">
+                    <h3>Moyenne Générale</h3>
+                    <div class="value" id="dash-general-average">0.00 /20</div>
+                </div>
+                <div class="card">
+                    <h3>Absences non justifiées</h3>
+                    <div class="value" id="dash-unjustified-abs">0</div>
+                </div>
+                <div class="card red-brand">
+                    <h3>Matières Enseignées</h3>
+                    <div class="value">4</div>
+                </div>
+            </div>
+
+            <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 20px;">
+                <div class="content-box">
+                    <div class="box-header"><h2>Classement Général des Étudiants</h2></div>
+                    <table id="dash-ranking-table">
+                        <thead>
+                            <tr>
+                                <th>Rang</th>
+                                <th>Nom & Prénom</th>
+                                <th>Moyenne</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+
+                <div class="content-box">
+                    <div class="box-header"><h2>Absences Récentes</h2></div>
+                    <table id="dash-abs-table">
+                        <thead>
+                            <tr>
+                                <th>Étudiant</th>
+                                <th>Séance</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <section id="students" class="page-section">
+            <div class="content-box">
+                <div class="box-header">
+                    <h2>Liste des Étudiants (Table: ETUDIANT)</h2>
+                    <button class="btn btn-primary" onclick="openModal('student-modal')">+ Ajouter un Étudiant</button>
+                </div>
+                <div class="form-inline">
+                    <input type="text" id="search-student" class="form-control" placeholder="Rechercher par nom..." onkeyup="filterStudents()">
+                </div>
+                <table id="students-table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Nom</th>
+                            <th>Prénom</th>
+                            <th>Email</th>
+                            <th>Téléphone</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+        </section>
+
+        <section id="notes" class="page-section">
+            <div class="content-box">
+                <div class="box-header">
+                    <h2>Gestion des Notes (Table: NOTE)</h2>
+                    <button class="btn btn-primary" onclick="openModal('note-modal')">+ Saisir une Note</button>
+                </div>
+                <div class="form-inline">
+                    <select id="filter-note-matiere" class="form-control" onchange="renderNotes()">
+                        <option value="all">Toutes les matières</option>
+                        <option value="1">Web Dynamique (PHP/MySQL)</option>
+                        <option value="2">Intelligence Artificielle</option>
+                        <option value="3">Automatisation & Scripts</option>
+                        <option value="4">Architecture Java OOPS</option>
+                    </select>
+                </div>
+                <table id="notes-table">
+                    <thead>
+                        <tr>
+                            <th>Étudiant</th>
+                            <th>Matière</th>
+                            <th>Type Examen</th>
+                            <th>Note /20</th>
+                            <th>Date</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+        </section>
+
+        <section id="absences" class="page-section">
+            <div class="content-box">
+                <div class="box-header">
+                    <h2>Registre des Absences (Table: ABSENCE)</h2>
+                    <button class="btn btn-secondary" onclick="openModal('absence-modal')">+ Marquer une Absence</button>
+                </div>
+                <table id="absences-table">
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Étudiant</th>
+                            <th>Matière / Séance</th>
+                            <th>Statut</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+        </section>
+
+        <section id="timetable" class="page-section">
+            <div class="content-box">
+                <div class="box-header">
+                    <h2>Grille Hebdomadaire Interactive (Table: EMPLOI_TEMPS)</h2>
+                </div>
+                <div class="timetable-grid">
+                    <div class="timetable-header" style="background:#2D3748;">Heures</div>
+                    <div class="timetable-header">Lundi</div>
+                    <div class="timetable-header">Mardi</div>
+                    <div class="timetable-header">Mercredi</div>
+                    <div class="timetable-header">Jeudi</div>
+                    <div class="timetable-header">Vendredi</div>
+
+                    <div class="time-slot">08:30 - 11:00</div>
+                    <div class="course-card"><div class="course-title">Web PHP/MySQL</div><div class="course-prof">M. Lachhab</div><div class="course-room">Salle 3 (ISI)</div></div>
+                    <div class="course-card" style="background:#EDF2F7; border:none;"></div>
+                    <div class="course-card"><div class="course-title">Intelligence Artificielle</div><div class="course-prof">M. Lachhab</div><div class="course-room">Labo IA</div></div>
+                    <div class="course-card" style="background:#EDF2F7; border:none;"></div>
+                    <div class="course-card"><div class="course-title">Architecture Java</div><div class="course-prof">Prof. SUPMTI</div><div class="course-room">Amphi A</div></div>
+
+                    <div class="time-slot">11:00 - 13:30</div>
+                    <div class="course-card" style="background:#EDF2F7; border:none;"></div>
+                    <div class="course-card"><div class="course-title">Automatisation</div><div class="course-prof">M. Lachhab</div><div class="course-room">Labo Réseau</div></div>
+                    <div class="course-card" style="background:#EDF2F7; border:none;"></div>
+                    <div class="course-card"><div class="course-title font-weight-bold">Web PHP/MySQL</div><div class="course-prof">M. Lachhab</div><div class="course-room">Salle 3</div></div>
+                    <div class="course-card" style="background:#EDF2F7; border:none;"></div>
+
+                    <div class="time-slot">14:30 - 17:00</div>
+                    <div class="course-card"><div class="course-title">Projet Pratique</div><div class="course-prof">Encadrant ISI</div><div class="course-room">Salle Informatique</div></div>
+                    <div class="course-card" style="background:#EDF2F7; border:none;"></div>
+                    <div class="course-card"><div class="course-title">Architecture Java</div><div class="course-prof">Prof. SUPMTI</div><div class="course-room">Amphi A</div></div>
+                    <div class="course-card" style="background:#EDF2F7; border:none;"></div>
+                    <div class="course-card"><div class="course-title">Mini-Projet IA</div><div class="course-prof">M. Lachhab</div><div class="course-room">Distance</div></div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <div id="student-modal" class="modal">
+        <div class="modal-content">
+            <h3>Ajouter un nouvel Étudiant</h3>
+            <form id="student-form" onsubmit="addStudent(event)">
+                <div class="form-group"><label>Nom</label><input type="text" id="stud-nom" class="form-control" required></div>
+                <div class="form-group"><label>Prénom</label><input type="text" id="stud-prenom" class="form-control" required></div>
+                <div class="form-group"><label>Email</label><input type="email" id="stud-email" class="form-control" required></div>
+                <div class="form-group"><label>Téléphone</label><input type="text" id="stud-tel" class="form-control" required></div>
+                <div style="display:flex; justify-content:flex-end; gap:10px; margin-top:15px;">
+                    <button type="button" class="btn btn-danger" onclick="closeModal('student-modal')">Annuler</button>
+                    <button type="submit" class="btn btn-primary">Enregistrer</button>
+                </div>
+            </form>
         </div>
-        <div class="tbl-wrap"><table>
-          <thead><tr><th>Étudiant</th><th>Matière</th><th>Date</th><th>Statut</th></tr></thead>
-          <tbody id="dash-abs"></tbody>
-        </table></div>
-      </div>
     </div>
-  </div>
 
-  <!-- ── ÉTUDIANTS ──────────────────────────────── -->
-  <div class="page" id="page-etudiants">
-    <div class="page-hd">
-      <div><h1>Étudiants</h1><p>Gérer les fiches étudiants</p></div>
-      <button class="btn btn-primary" onclick="openModal('modal-etudiant')">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-        Ajouter un étudiant
-      </button>
-    </div>
-    <div style="display:flex;gap:.75rem;margin-bottom:1.25rem;">
-      <input type="text" id="search-etudiant" placeholder="Rechercher par nom, prénom ou email..."
-        oninput="renderEtudiants()" style="flex:1;padding:9px 12px;border:1.5px solid var(--gray-100);border-radius:8px;font-family:inherit;font-size:13px;outline:none;">
-    </div>
-    <div class="card">
-      <div class="card-header">
-        <div class="card-title"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>Liste des étudiants</div>
-        <span class="badge badge-navy" id="count-etudiants">0 étudiant(s)</span>
-      </div>
-      <div class="tbl-wrap"><table>
-        <thead><tr><th>#</th><th>Étudiant</th><th>Âge</th><th>Email</th><th>Téléphone</th><th>Moyenne</th><th>Absences</th><th>Actions</th></tr></thead>
-        <tbody id="tbody-etudiants"></tbody>
-      </table></div>
-    </div>
-  </div>
-
-  <!-- ── MATIÈRES ──────────────────────────────── -->
-  <div class="page" id="page-matieres">
-    <div class="page-hd">
-      <div><h1>Matières</h1><p>Gérer les matières et coefficients</p></div>
-      <button class="btn btn-primary" onclick="openModal('modal-matiere')">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-        Ajouter une matière
-      </button>
-    </div>
-    <div class="card">
-      <div class="card-header">
-        <div class="card-title"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>Liste des matières</div>
-        <span class="badge badge-navy" id="count-matieres">0</span>
-      </div>
-      <div class="tbl-wrap"><table>
-        <thead><tr><th>#</th><th>Nom de la matière</th><th>Coefficient</th><th>Vol. horaire</th><th>Nb notes</th><th>Actions</th></tr></thead>
-        <tbody id="tbody-matieres"></tbody>
-      </table></div>
-    </div>
-  </div>
-
-  <!-- ── NOTES ──────────────────────────────── -->
-  <div class="page" id="page-notes">
-    <div class="page-hd">
-      <div><h1>Notes</h1><p>Saisir et consulter les notes</p></div>
-      <button class="btn btn-primary" onclick="openModal('modal-note')">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-        Saisir une note
-      </button>
-    </div>
-    <div class="filter-bar">
-      <div class="form-group"><label>Étudiant</label>
-        <select id="filter-note-etudiant" onchange="renderNotes()" style="padding:9px 12px;border:1.5px solid var(--gray-100);border-radius:8px;font-family:inherit;font-size:13px;outline:none;">
-          <option value="">— Tous —</option>
-        </select>
-      </div>
-      <div class="form-group"><label>Matière</label>
-        <select id="filter-note-matiere" onchange="renderNotes()" style="padding:9px 12px;border:1.5px solid var(--gray-100);border-radius:8px;font-family:inherit;font-size:13px;outline:none;">
-          <option value="">— Toutes —</option>
-        </select>
-      </div>
-    </div>
-    <div class="grid-2">
-      <div class="card">
-        <div class="card-header">
-          <div class="card-title"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/></svg>Notes saisies</div>
-          <span class="badge badge-orange" id="count-notes">0</span>
+    <div id="note-modal" class="modal">
+        <div class="modal-content">
+            <h3>Enregistrer une Note</h3>
+            <form id="note-form" onsubmit="addNote(event)">
+                <div class="form-group">
+                    <label>Étudiant</label>
+                    <select id="note-student-select" class="form-control"></select>
+                </div>
+                <div class="form-group">
+                    <label>Matière</label>
+                    <select id="note-matiere-select" class="form-control">
+                        <option value="1">Web Dynamique (PHP/MySQL)</option>
+                        <option value="2">Intelligence Artificielle</option>
+                        <option value="3">Automatisation & Scripts</option>
+                        <option value="4">Architecture Java OOPS</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Type d'Examen</label>
+                    <select id="note-type" class="form-control">
+                        <option value="Contrôle Continu">Contrôle Continu</option>
+                        <option value="Examen Terminal">Examen Terminal</option>
+                        <option value="TP Pratique">TP Pratique</option>
+                    </select>
+                </div>
+                <div class="form-group"><label>Note /20</label><input type="number" id="note-valeur" min="0" max="20" step="0.25" class="form-control" required></div>
+                <div style="display:flex; justify-content:flex-end; gap:10px; margin-top:15px;">
+                    <button type="button" class="btn btn-danger" onclick="closeModal('note-modal')">Annuler</button>
+                    <button type="submit" class="btn btn-primary">Enregistrer</button>
+                </div>
+            </form>
         </div>
-        <div class="tbl-wrap"><table>
-          <thead><tr><th>Étudiant</th><th>Matière</th><th>Type</th><th>Note</th><th>Date</th><th></th></tr></thead>
-          <tbody id="tbody-notes"></tbody>
-        </table></div>
-      </div>
-      <div class="card">
-        <div class="card-header">
-          <div class="card-title"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>Moyennes par matière</div>
+    </div>
+
+    <div id="absence-modal" class="modal">
+        <div class="modal-content">
+            <h3>Marquer une Absence</h3>
+            <form id="absence-form" onsubmit="addAbsence(event)">
+                <div class="form-group">
+                    <label>Étudiant</label>
+                    <select id="abs-student-select" class="form-control"></select>
+                </div>
+                <div class="form-group">
+                    <label>Séance / Matière</label>
+                    <select id="abs-matiere" class="form-control">
+                        <option value="Web PHP/MySQL">Web PHP/MySQL</option>
+                        <option value="Intelligence Artificielle">Intelligence Artificielle</option>
+                        <option value="Automatisation">Automatisation</option>
+                        <option value="Architecture Java">Architecture Java</option>
+                    </select>
+                </div>
+                <div style="display:flex; justify-content:flex-end; gap:10px; margin-top:15px;">
+                    <button type="button" class="btn btn-danger" onclick="closeModal('absence-modal')">Annuler</button>
+                    <button type="submit" class="btn btn-primary">Valider</button>
+                </div>
+            </form>
         </div>
-        <div class="tbl-wrap"><table>
-          <thead><tr><th>Étudiant</th><th>Matière</th><th>Moy.</th></tr></thead>
-          <tbody id="tbody-moyennes"></tbody>
-        </table></div>
-      </div>
     </div>
-  </div>
 
-  <!-- ── ABSENCES ──────────────────────────────── -->
-  <div class="page" id="page-absences">
-    <div class="page-hd">
-      <div><h1>Absences</h1><p>Enregistrer et suivre les absences</p></div>
-      <button class="btn btn-primary" onclick="openModal('modal-absence')">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-        Enregistrer une absence
-      </button>
-    </div>
-    <div class="filter-bar">
-      <div class="form-group"><label>Étudiant</label>
-        <select id="filter-abs-etudiant" onchange="renderAbsences()" style="padding:9px 12px;border:1.5px solid var(--gray-100);border-radius:8px;font-family:inherit;font-size:13px;outline:none;">
-          <option value="">— Tous —</option>
-        </select>
-      </div>
-      <div class="form-group"><label>Statut</label>
-        <select id="filter-abs-statut" onchange="renderAbsences()" style="padding:9px 12px;border:1.5px solid var(--gray-100);border-radius:8px;font-family:inherit;font-size:13px;outline:none;">
-          <option value="">— Tous —</option>
-          <option value="N">Non justifiée</option>
-          <option value="O">Justifiée</option>
-        </select>
-      </div>
-    </div>
-    <div class="grid-2">
-      <div class="card">
-        <div class="card-header">
-          <div class="card-title"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="3" y1="10" x2="21" y2="10"/></svg>Liste des absences</div>
-          <span class="badge badge-red" id="count-absences">0</span>
-        </div>
-        <div class="tbl-wrap"><table>
-          <thead><tr><th>Étudiant</th><th>Matière</th><th>Date</th><th>Séance</th><th>Statut</th><th>Actions</th></tr></thead>
-          <tbody id="tbody-absences"></tbody>
-        </table></div>
-      </div>
-      <div class="card">
-        <div class="card-header">
-          <div class="card-title"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21.21 15.89A10 10 0 1 1 8 2.83"/><path d="M22 12A10 10 0 0 0 12 2v10z"/></svg>Stats par étudiant</div>
-        </div>
-        <div class="tbl-wrap"><table>
-          <thead><tr><th>Étudiant</th><th>Total</th><th>Injust.</th><th>Justif.</th></tr></thead>
-          <tbody id="tbody-abs-stats"></tbody>
-        </table></div>
-      </div>
-    </div>
-  </div>
-
-  <!-- ── EMPLOI DU TEMPS ──────────────────────────────── -->
-  <div class="page" id="page-emploi">
-    <div class="page-hd">
-      <div><h1>Emploi du temps</h1><p>Grille hebdomadaire ISI 2ème année</p></div>
-      <button class="btn btn-primary" onclick="openModal('modal-emploi')">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-        Ajouter une séance
-      </button>
-    </div>
-    <div class="card" style="margin-bottom:1.25rem;">
-      <div class="card-header">
-        <div class="card-title"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="3" y1="10" x2="21" y2="10"/></svg>Vue hebdomadaire</div>
-        <span class="badge badge-navy">ISI 2ème année</span>
-      </div>
-      <div class="card-body">
-        <div class="timetable-wrap"><div class="timetable" id="timetable-grid"></div></div>
-      </div>
-    </div>
-    <div class="card">
-      <div class="card-header">
-        <div class="card-title"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>Toutes les séances</div>
-        <span class="badge badge-blue" id="count-emploi">0</span>
-      </div>
-      <div class="tbl-wrap"><table>
-        <thead><tr><th>Jour</th><th>Horaire</th><th>Matière</th><th>Professeur</th><th>Salle</th><th></th></tr></thead>
-        <tbody id="tbody-emploi"></tbody>
-      </table></div>
-    </div>
-  </div>
-
-  <!-- ── SCHEMA BD ──────────────────────────────── -->
-  <div class="page" id="page-schema">
-    <div class="page-hd">
-      <div><h1>Schéma de la base de données</h1><p>Structure relationnelle — Méthode Merise</p></div>
-    </div>
-    <div class="card" style="margin-bottom:1.25rem;">
-      <div class="card-header"><div class="card-title"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg>Modèle Relationnel (MLD)</div></div>
-      <div class="card-body">
-        <div style="display:flex;flex-direction:column;gap:.75rem;font-family:'JetBrains Mono',monospace;font-size:13px;">
-          <div style="background:var(--blue-pale);border-left:4px solid var(--blue);padding:.75rem 1rem;border-radius:6px;">
-            <strong style="color:var(--blue);">ETUDIANT</strong> (<u>Id_etudiant</u>, Nom, Prénom, Age, Téléphone, Email)
-          </div>
-          <div style="background:var(--blue-pale);border-left:4px solid var(--blue);padding:.75rem 1rem;border-radius:6px;">
-            <strong style="color:var(--blue);">PROFESSEUR</strong> (<u>Id_prof</u>, Nom, Prénom, Spécialité, Téléphone)
-          </div>
-          <div style="background:var(--blue-pale);border-left:4px solid var(--blue);padding:.75rem 1rem;border-radius:6px;">
-            <strong style="color:var(--blue);">MATIERE</strong> (<u>Id_matiere</u>, Nom_matiere, Coefficient, Vol_horaire)
-          </div>
-          <div style="background:#FFF7ED;border-left:4px solid var(--orange);padding:.75rem 1rem;border-radius:6px;">
-            <strong style="color:var(--orange);">NOTE</strong> (<u>Id_note</u>, Valeur, Date_exam, Type, <em style="color:var(--orange);">#Id_etudiant</em>, <em style="color:var(--orange);">#Id_matiere</em>)
-          </div>
-          <div style="background:#FFF7ED;border-left:4px solid var(--orange);padding:.75rem 1rem;border-radius:6px;">
-            <strong style="color:var(--orange);">ABSENCE</strong> (<u>Id_absence</u>, Date, Justifiee, Seance, <em style="color:var(--orange);">#Id_etudiant</em>, <em style="color:var(--orange);">#Id_matiere</em>)
-          </div>
-          <div style="background:#FFF7ED;border-left:4px solid var(--orange);padding:.75rem 1rem;border-radius:6px;">
-            <strong style="color:var(--orange);">EMPLOI_TEMPS</strong> (<u>Id_emploi</u>, Jour, Heure_debut, Heure_fin, Salle, <em style="color:var(--orange);">#Id_prof</em>, <em style="color:var(--orange);">#Id_matiere</em>)
-          </div>
-          <div style="background:#FFF7ED;border-left:4px solid var(--orange);padding:.75rem 1rem;border-radius:6px;">
-            <strong style="color:var(--orange);">INSCRIPTION</strong> (<em style="color:var(--orange);">#Id_etudiant</em>, <em style="color:var(--orange);">#Id_matiere</em>)
-          </div>
-        </div>
-        <div style="margin-top:1rem;padding:.75rem;background:var(--gray-50);border-radius:6px;font-size:12px;color:var(--gray-400);">
-          <u>Clé primaire</u> &nbsp;·&nbsp; <em style="color:var(--orange);">#Clé étrangère</em> &nbsp;·&nbsp; 7 tables &nbsp;·&nbsp; 6 contraintes FK
-        </div>
-      </div>
-    </div>
-    <div class="grid-2-eq">
-      <div class="card">
-        <div class="card-header"><div class="card-title">Cardinalités</div></div>
-        <div class="tbl-wrap"><table>
-          <thead><tr><th>Relation</th><th>Cardinalité</th></tr></thead>
-          <tbody>
-            <tr><td>Étudiant — Matière (INSCRIT)</td><td><span class="badge badge-blue">1,N / 1,N</span></td></tr>
-            <tr><td>Étudiant — Note</td><td><span class="badge badge-blue">1,N / 1,1</span></td></tr>
-            <tr><td>Étudiant — Absence</td><td><span class="badge badge-blue">1,N / 1,1</span></td></tr>
-            <tr><td>Professeur — Matière (ENSEIGNE)</td><td><span class="badge badge-blue">1,N / 1,N</span></td></tr>
-            <tr><td>Professeur — Emploi du temps</td><td><span class="badge badge-blue">1,N / 1,1</span></td></tr>
-          </tbody>
-        </table></div>
-      </div>
-      <div class="card">
-        <div class="card-header"><div class="card-title">Statistiques BD</div></div>
-        <div class="card-body" id="schema-stats"></div>
-      </div>
-    </div>
-  </div>
-</div>
-
-
-<div class="modal-overlay" id="modal-etudiant">
-  <div class="modal">
-    <div class="modal-header">
-      <h3><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg><span id="modal-etudiant-title">Ajouter un étudiant</span></h3>
-      <button class="modal-close" onclick="closeModal('modal-etudiant')">✕</button>
-    </div>
-    <div class="modal-body">
-      <input type="hidden" id="etudiant-edit-id">
-      <div class="form-grid">
-        <div class="form-group"><label>Nom *</label><input type="text" id="f-nom" placeholder="Ex: Lachhab"></div>
-        <div class="form-group"><label>Prénom *</label><input type="text" id="f-prenom" placeholder="Ex: Youssef"></div>
-        <div class="form-group"><label>Âge</label><input type="number" id="f-age" min="15" max="40" placeholder="19"></div>
-        <div class="form-group"><label>Téléphone</label><input type="text" id="f-tel" placeholder="06XXXXXXXX"></div>
-        <div class="form-group" style="grid-column:1/-1;"><label>Email</label><input type="email" id="f-email" placeholder="etudiant@supmti.ma"></div>
-      </div>
-      <div class="form-actions">
-        <button class="btn btn-primary" onclick="saveEtudiant()">Enregistrer</button>
-        <button class="btn btn-outline" onclick="closeModal('modal-etudiant')">Annuler</button>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- Modal Matière -->
-<div class="modal-overlay" id="modal-matiere">
-  <div class="modal">
-    <div class="modal-header">
-      <h3><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg><span id="modal-matiere-title">Ajouter une matière</span></h3>
-      <button class="modal-close" onclick="closeModal('modal-matiere')">✕</button>
-    </div>
-    <div class="modal-body">
-      <input type="hidden" id="matiere-edit-id">
-      <div class="form-grid">
-        <div class="form-group" style="grid-column:1/-1;"><label>Nom de la matière *</label><input type="text" id="f-mat-nom" placeholder="Ex: Bases de données"></div>
-        <div class="form-group"><label>Coefficient</label><input type="number" id="f-mat-coef" min="0.5" max="5" step="0.5" placeholder="2"></div>
-        <div class="form-group"><label>Volume horaire (h)</label><input type="number" id="f-mat-vh" min="0" placeholder="40"></div>
-      </div>
-      <div class="form-actions">
-        <button class="btn btn-primary" onclick="saveMatiere()">Enregistrer</button>
-        <button class="btn btn-outline" onclick="closeModal('modal-matiere')">Annuler</button>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- Modal Note -->
-<div class="modal-overlay" id="modal-note">
-  <div class="modal">
-    <div class="modal-header">
-      <h3><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/></svg><span id="modal-note-title">Saisir une note</span></h3>
-      <button class="modal-close" onclick="closeModal('modal-note')">✕</button>
-    </div>
-    <div class="modal-body">
-      <input type="hidden" id="note-edit-id">
-      <div class="form-grid">
-        <div class="form-group"><label>Étudiant *</label>
-          <select id="f-note-etudiant"><option value="">— Choisir —</option></select></div>
-        <div class="form-group"><label>Matière *</label>
-          <select id="f-note-matiere"><option value="">— Choisir —</option></select></div>
-        <div class="form-group"><label>Note (sur 20) *</label>
-          <input type="number" id="f-note-val" min="0" max="20" step="0.25" placeholder="Ex: 14.50"></div>
-        <div class="form-group"><label>Type</label>
-          <select id="f-note-type">
-            <option>DS</option><option>TP</option><option>Examen final</option><option>Devoir</option>
-          </select></div>
-        <div class="form-group"><label>Date examen</label>
-          <input type="date" id="f-note-date"></div>
-      </div>
-      <div class="form-actions">
-        <button class="btn btn-primary" onclick="saveNote()">Enregistrer</button>
-        <button class="btn btn-outline" onclick="closeModal('modal-note')">Annuler</button>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- Modal Absence -->
-<div class="modal-overlay" id="modal-absence">
-  <div class="modal">
-    <div class="modal-header">
-      <h3><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="3" y1="10" x2="21" y2="10"/></svg><span id="modal-absence-title">Enregistrer une absence</span></h3>
-      <button class="modal-close" onclick="closeModal('modal-absence')">✕</button>
-    </div>
-    <div class="modal-body">
-      <input type="hidden" id="absence-edit-id">
-      <div class="form-grid">
-        <div class="form-group"><label>Étudiant *</label>
-          <select id="f-abs-etudiant"><option value="">— Choisir —</option></select></div>
-        <div class="form-group"><label>Matière *</label>
-          <select id="f-abs-matiere"><option value="">— Choisir —</option></select></div>
-        <div class="form-group"><label>Date</label>
-          <input type="date" id="f-abs-date"></div>
-        <div class="form-group"><label>Séance n°</label>
-          <input type="number" id="f-abs-seance" min="1" max="20" value="1"></div>
-        <div class="form-group"><label>Justifiée ?</label>
-          <select id="f-abs-just"><option value="N">Non</option><option value="O">Oui</option></select></div>
-      </div>
-      <div class="form-actions">
-        <button class="btn btn-primary" onclick="saveAbsence()">Enregistrer</button>
-        <button class="btn btn-outline" onclick="closeModal('modal-absence')">Annuler</button>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- Modal Emploi du temps -->
-<div class="modal-overlay" id="modal-emploi">
-  <div class="modal">
-    <div class="modal-header">
-      <h3><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg><span id="modal-emploi-title">Ajouter une séance</span></h3>
-      <button class="modal-close" onclick="closeModal('modal-emploi')">✕</button>
-    </div>
-    <div class="modal-body">
-      <input type="hidden" id="emploi-edit-id">
-      <div class="form-grid">
-        <div class="form-group"><label>Jour *</label>
-          <select id="f-emp-jour">
-            <option>Lundi</option><option>Mardi</option><option>Mercredi</option>
-            <option>Jeudi</option><option>Vendredi</option><option>Samedi</option>
-          </select></div>
-        <div class="form-group"><label>Salle</label>
-          <input type="text" id="f-emp-salle" placeholder="Ex: A101"></div>
-        <div class="form-group"><label>Heure début *</label>
-          <input type="time" id="f-emp-debut" value="08:00"></div>
-        <div class="form-group"><label>Heure fin *</label>
-          <input type="time" id="f-emp-fin" value="10:00"></div>
-        <div class="form-group"><label>Professeur *</label>
-          <input type="text" id="f-emp-prof" placeholder="Nom du professeur"></div>
-        <div class="form-group"><label>Matière *</label>
-          <select id="f-emp-matiere"><option value="">— Choisir —</option></select></div>
-      </div>
-      <div class="form-actions">
-        <button class="btn btn-primary" onclick="saveEmploi()">Enregistrer</button>
-        <button class="btn btn-outline" onclick="closeModal('modal-emploi')">Annuler</button>
-      </div>
-    </div>
-  </div>
-</div>
-
-<script>
-
-const DB = {
-  get: k => JSON.parse(localStorage.getItem('gc_'+k) || '[]'),
-  set: (k,v) => localStorage.setItem('gc_'+k, JSON.stringify(v)),
-  nextId: k => { const d=DB.get(k); return d.length ? Math.max(...d.map(x=>x.id))+1 : 1; }
-};
-
-
-function seedDemo() {
-  if (DB.get('etudiants').length) return;
-
-  DB.set('etudiants', [
-    {id:1, nom:'Lachhab',  prenom:'Youssef',  age:19, tel:'0612345678', email:'youssef@supmti.ma'},
-    {id:2, nom:'Benali',   prenom:'Imad',      age:20, tel:'0623456789', email:'imad@supmti.ma'},
-    {id:3, nom:'Idrissi',  prenom:'Sara',      age:19, tel:'0634567890', email:'sara@supmti.ma'},
-    {id:4, nom:'Ouali',    prenom:'Karim',     age:21, tel:'0645678901', email:'karim@supmti.ma'},
-    {id:5, nom:'Ziani',    prenom:'Nadia',     age:20, tel:'0656789012', email:'nadia@supmti.ma'},
-  ]);
-  DB.set('matieres', [
-    {id:1, nom:'Bases de données & SI',   coef:3.0, vh:45},
-    {id:2, nom:'Développement Web',       coef:2.5, vh:40},
-    {id:3, nom:'Réseaux Informatiques',   coef:2.0, vh:35},
-    {id:4, nom:'Algorithmique',           coef:2.5, vh:40},
-    {id:5, nom:'Mathématiques',           coef:2.0, vh:35},
-  ]);
-  DB.set('notes', [
-    {id:1,  eId:1, mId:1, val:17.5, date:'2025-11-15', type:'DS'},
-    {id:2,  eId:1, mId:2, val:15.0, date:'2025-11-20', type:'TP'},
-    {id:3,  eId:1, mId:1, val:18.0, date:'2025-12-10', type:'Examen final'},
-    {id:4,  eId:2, mId:1, val:14.5, date:'2025-11-15', type:'DS'},
-    {id:5,  eId:2, mId:2, val:16.0, date:'2025-11-20', type:'TP'},
-    {id:6,  eId:2, mId:3, val:12.0, date:'2025-12-10', type:'Examen final'},
-    {id:7,  eId:3, mId:1, val:19.0, date:'2025-11-15', type:'DS'},
-    {id:8,  eId:3, mId:2, val:13.5, date:'2025-11-20', type:'TP'},
-    {id:9,  eId:4, mId:4, val:11.0, date:'2025-12-10', type:'DS'},
-    {id:10, eId:5, mId:1, val:15.5, date:'2025-11-15', type:'DS'},
-  ]);
-  DB.set('absences', [
-    {id:1, eId:2, mId:1, date:'2025-10-05', just:'N', seance:1},
-    {id:2, eId:3, mId:2, date:'2025-10-12', just:'O', seance:2},
-    {id:3, eId:4, mId:3, date:'2025-10-19', just:'N', seance:1},
-    {id:4, eId:2, mId:4, date:'2025-10-25', just:'O', seance:3},
-    {id:5, eId:5, mId:1, date:'2025-11-02', just:'N', seance:2},
-  ]);
-  DB.set('emplois', [
-    {id:1, jour:'Lundi',    debut:'08:00', fin:'10:00', salle:'A101', prof:'Prof. Davina',  mId:1},
-    {id:2, jour:'Lundi',    debut:'10:00', fin:'12:00', salle:'B202', prof:'Prof. Hamid',   mId:2},
-    {id:3, jour:'Mardi',    debut:'08:00', fin:'10:00', salle:'C303', prof:'Prof. Amine',   mId:3},
-    {id:4, jour:'Mercredi', debut:'14:00', fin:'16:00', salle:'A101', prof:'Prof. Davina',  mId:4},
-    {id:5, jour:'Jeudi',    debut:'10:00', fin:'12:00', salle:'B202', prof:'Prof. Hamid',   mId:5},
-    {id:6, jour:'Vendredi', debut:'08:00', fin:'10:00', salle:'C303', prof:'Prof. Amine',   mId:3},
-  ]);
-}
-
-// ── Helpers ──────────────────────────────────────────────────────────
-const getEtudiant = id => DB.get('etudiants').find(e=>e.id==id);
-const getMatiere  = id => DB.get('matieres').find(m=>m.id==id);
-const nomEtudiant = id => { const e=getEtudiant(id); return e ? e.prenom+' '+e.nom : '?'; };
-const nomMatiere  = id => { const m=getMatiere(id);  return m ? m.nom : '?'; };
-
-function avgEtudiant(eId) {
-  const notes = DB.get('notes').filter(n=>n.eId==eId);
-  if (!notes.length) return null;
-  return (notes.reduce((s,n)=>s+n.val,0)/notes.length).toFixed(2);
-}
-
-function avgEtudiantMatiere(eId, mId) {
-  const notes = DB.get('notes').filter(n=>n.eId==eId && n.mId==mId);
-  if (!notes.length) return null;
-  return (notes.reduce((s,n)=>s+n.val,0)/notes.length).toFixed(2);
-}
-
-function badgeMoy(moy) {
-  if (moy === null) return `<span class="badge badge-gray">—</span>`;
-  const v = parseFloat(moy);
-  const cls = v>=12?'green':v>=10?'orange':'red';
-  return `<span class="badge badge-${cls}">${moy}/20</span>`;
-}
-
-function avatar(nom, prenom) {
-  return `<div class="avatar">${(prenom[0]||'')+(nom[0]||'')}</div>`;
-}
-
-function fmtDate(d) {
-  if (!d) return '—';
-  const p = d.split('-');
-  return p[2]+'/'+p[1]+'/'+p[0];
-}
-
-function flash(msg, type='success') {
-  const z = document.getElementById('flash-zone');
-  z.innerHTML = `<div class="alert alert-${type}" style="margin:0 0 1rem;">${msg}</div>`;
-  setTimeout(()=>{ z.innerHTML=''; }, 3500);
-}
-
-// ── Navigation ───────────────────────────────────────────────────────
-function showPage(id, btn) {
-  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
-  document.querySelectorAll('.nav-item').forEach(b=>b.classList.remove('active'));
-  document.getElementById('page-'+id).classList.add('active');
-  if (btn) btn.classList.add('active');
-  else {
-    document.querySelectorAll('.nav-item').forEach(b=>{
-      if (b.getAttribute('onclick')?.includes("'"+id+"'")) b.classList.add('active');
-    });
-  }
-  const titles = {
-    dashboard:'Tableau de bord', etudiants:'Étudiants', matieres:'Matières',
-    notes:'Notes', absences:'Absences', emploi:'Emploi du temps', schema:'Schéma BD'
-  };
-  document.getElementById('topbar-title').textContent = titles[id] || id;
-
-  if (id==='dashboard')  renderDashboard();
-  if (id==='etudiants')  renderEtudiants();
-  if (id==='matieres')   renderMatieres();
-  if (id==='notes')      { populateSelects(); renderNotes(); renderMoyennes(); }
-  if (id==='absences')   { populateSelects(); renderAbsences(); renderAbsStats(); }
-  if (id==='emploi')     { populateSelects(); renderEmploi(); renderTimetable(); }
-  if (id==='schema')     renderSchema();
-}
-
-// ── Modals ───────────────────────────────────────────────────────────
-function openModal(id) {
-  document.getElementById(id).classList.add('open');
-}
-function closeModal(id) {
-  document.getElementById(id).classList.remove('open');
-}
-document.querySelectorAll('.modal-overlay').forEach(m=>{
-  m.addEventListener('click', e=>{ if(e.target===m) m.classList.remove('open'); });
-});
-
-// ── Populate selects ─────────────────────────────────────────────────
-function populateSelects() {
-  const etudiants = DB.get('etudiants');
-  const matieres  = DB.get('matieres');
-
-  ['f-note-etudiant','f-abs-etudiant','filter-note-etudiant','filter-abs-etudiant'].forEach(id=>{
-    const el = document.getElementById(id);
-    if (!el) return;
-    const cur = el.value;
-    el.innerHTML = '<option value="">— Tous —</option>';
-    etudiants.forEach(e=>{
-      const o = document.createElement('option');
-      o.value=e.id; o.textContent=e.prenom+' '+e.nom;
-      if (e.id==cur) o.selected=true;
-      el.appendChild(o);
-    });
-  });
-
-  ['f-note-matiere','f-abs-matiere','f-emp-matiere','filter-note-matiere'].forEach(id=>{
-    const el = document.getElementById(id);
-    if (!el) return;
-    const cur = el.value;
-    el.innerHTML = '<option value="">— Choisir —</option>';
-    matieres.forEach(m=>{
-      const o = document.createElement('option');
-      o.value=m.id; o.textContent=m.nom;
-      if (m.id==cur) o.selected=true;
-      el.appendChild(o);
-    });
-  });
-}
-function renderDashboard() {
-  const etudiants = DB.get('etudiants');
-  const matieres  = DB.get('matieres');
-  const notes     = DB.get('notes');
-  const absences  = DB.get('absences');
-
-  // Stats
-  const injust = absences.filter(a=>a.just==='N').length;
-  const allMoy = notes.length ? (notes.reduce((s,n)=>s+n.val,0)/notes.length).toFixed(2) : null;
-
-  document.getElementById('dash-stats').innerHTML = `
-    <div class="stat-card"><div class="stat-icon blue">👥</div><div><div class="stat-val">${etudiants.length}</div><div class="stat-lbl">Étudiants</div></div></div>
-    <div class="stat-card"><div class="stat-icon navy">📚</div><div><div class="stat-val">${matieres.length}</div><div class="stat-lbl">Matières</div></div></div>
-    <div class="stat-card"><div class="stat-icon orange">📝</div><div><div class="stat-val">${notes.length}</div><div class="stat-lbl">Notes saisies</div></div></div>
-    <div class="stat-card"><div class="stat-icon red">📅</div><div><div class="stat-val">${injust}</div><div class="stat-lbl">Absences injustifiées</div></div></div>
-  `;
-
-  document.getElementById('dash-moy-gen').textContent = allMoy ? `Moy. générale : ${allMoy}/20` : 'Aucune note';
-
-  // Badges sidebar
-  document.getElementById('nb-etudiants').textContent = etudiants.length;
-  document.getElementById('nb-matieres').textContent  = matieres.length;
-  document.getElementById('nb-notes').textContent     = notes.length;
-  document.getElementById('nb-absences').textContent  = injust;
-
-  // Classement
-  const ranked = etudiants.map(e=>({
-    ...e, moy: avgEtudiant(e.id),
-    nb: notes.filter(n=>n.eId===e.id).length
-  })).sort((a,b)=>(parseFloat(b.moy)||0)-(parseFloat(a.moy)||0));
-
-  document.getElementById('dash-top').innerHTML = ranked.map((e,i)=>{
-    const medals = ['🥇','🥈','🥉'];
-    return `<tr>
-      <td><strong>${medals[i]||i+1}</strong></td>
-      <td><div style="display:flex;align-items:center;gap:10px;">${avatar(e.nom,e.prenom)}<span style="font-weight:600;">${e.prenom} ${e.nom}</span></div></td>
-      <td>${badgeMoy(e.moy)}</td>
-      <td><span class="badge badge-gray">${e.nb}</span></td>
-    </tr>`;
-  }).join('') || '<tr><td colspan="4" class="empty"><p>Aucune donnée</p></td></tr>';
-
-  // Absences récentes
-  const recent = [...absences].sort((a,b)=>b.date.localeCompare(a.date)).slice(0,5);
-  document.getElementById('dash-abs').innerHTML = recent.map(a=>`
-    <tr>
-      <td>${nomEtudiant(a.eId)}</td>
-      <td>${nomMatiere(a.mId)}</td>
-      <td>${fmtDate(a.date)}</td>
-      <td>${a.just==='O'?'<span class="badge badge-green">✓ Justifiée</span>':'<span class="badge badge-red">✗ Non justifiée</span>'}</td>
-    </tr>
-  `).join('') || '<tr><td colspan="4"><p style="text-align:center;padding:1rem;color:var(--gray-400);">Aucune absence</p></td></tr>';
-}
-
-// ════════════════════════════════════════════════════════════════════
-// ÉTUDIANTS
-// ════════════════════════════════════════════════════════════════════
-function renderEtudiants() {
-  const q = (document.getElementById('search-etudiant')?.value||'').toLowerCase();
-  let list = DB.get('etudiants');
-  if (q) list = list.filter(e=>
-    e.nom.toLowerCase().includes(q)||e.prenom.toLowerCase().includes(q)||(e.email||'').toLowerCase().includes(q)
-  );
-  document.getElementById('count-etudiants').textContent = list.length+' étudiant(s)';
-
-  const notes = DB.get('notes');
-  const absences = DB.get('absences');
-
-  document.getElementById('tbody-etudiants').innerHTML = list.map(e=>{
-    const moy = avgEtudiant(e.id);
-    const nbAbs = absences.filter(a=>a.eId===e.id).length;
-    return `<tr>
-      <td><span style="color:var(--gray-400);font-size:11px;">${e.id}</span></td>
-      <td><div style="display:flex;align-items:center;gap:10px;">${avatar(e.nom,e.prenom)}<div><div style="font-weight:600;">${e.prenom} ${e.nom}</div></div></div></td>
-      <td>${e.age||'—'} ans</td>
-      <td style="color:var(--blue);">${e.email||'—'}</td>
-      <td>${e.tel||'—'}</td>
-      <td>${badgeMoy(moy)}</td>
-      <td>${nbAbs>0?`<span class="badge badge-red">📅 ${nbAbs}</span>`:'<span class="badge badge-green">✓ 0</span>'}</td>
-      <td>
-        <div style="display:flex;gap:5px;">
-          <button class="btn btn-outline btn-icon" onclick="editEtudiant(${e.id})" title="Modifier">✏️</button>
-          <button class="btn btn-danger btn-icon" onclick="deleteEtudiant(${e.id})" title="Supprimer">🗑️</button>
-        </div>
-      </td>
-    </tr>`;
-  }).join('') || `<tr><td colspan="8"><div class="empty"><p>Aucun étudiant trouvé.</p></div></td></tr>`;
-}
-
-function saveEtudiant() {
-  const nom = document.getElementById('f-nom').value.trim();
-  const prenom = document.getElementById('f-prenom').value.trim();
-  if (!nom||!prenom) { flash('Nom et prénom sont obligatoires.','error'); return; }
-  const editId = parseInt(document.getElementById('etudiant-edit-id').value)||0;
-  const list = DB.get('etudiants');
-  const data = {
-    nom, prenom,
-    age: parseInt(document.getElementById('f-age').value)||null,
-    tel: document.getElementById('f-tel').value.trim(),
-    email: document.getElementById('f-email').value.trim(),
-  };
-  if (editId) {
-    const i = list.findIndex(e=>e.id===editId);
-    if (i>=0) list[i] = {...list[i], ...data};
-    DB.set('etudiants', list);
-    flash('Étudiant modifié avec succès.');
-  } else {
-    list.push({id: DB.nextId('etudiants'), ...data});
-    DB.set('etudiants', list);
-    flash('Étudiant ajouté avec succès.');
-  }
-  closeModal('modal-etudiant');
-  renderEtudiants();
-  renderDashboard();
-}
-
-function editEtudiant(id) {
-  const e = getEtudiant(id);
-  if (!e) return;
-  document.getElementById('etudiant-edit-id').value = e.id;
-  document.getElementById('f-nom').value    = e.nom;
-  document.getElementById('f-prenom').value = e.prenom;
-  document.getElementById('f-age').value    = e.age||'';
-  document.getElementById('f-tel').value    = e.tel||'';
-  document.getElementById('f-email').value  = e.email||'';
-  document.getElementById('modal-etudiant-title').textContent = 'Modifier l\'étudiant';
-  openModal('modal-etudiant');
-}
-
-function deleteEtudiant(id) {
-  if (!confirm('Supprimer cet étudiant et toutes ses données ?')) return;
-  DB.set('etudiants', DB.get('etudiants').filter(e=>e.id!==id));
-  DB.set('notes',    DB.get('notes').filter(n=>n.eId!==id));
-  DB.set('absences', DB.get('absences').filter(a=>a.eId!==id));
-  flash('Étudiant supprimé.');
-  renderEtudiants(); renderDashboard();
-}
-
-// Reset modal on open
-document.getElementById('modal-etudiant').addEventListener('click', function(e){
-  if (e.target === this) return;
-});
-document.querySelector('[onclick="openModal(\'modal-etudiant\')"]')?.addEventListener('click', ()=>{
-  document.getElementById('etudiant-edit-id').value='';
-  document.getElementById('f-nom').value='';
-  document.getElementById('f-prenom').value='';
-  document.getElementById('f-age').value='';
-  document.getElementById('f-tel').value='';
-  document.getElementById('f-email').value='';
-  document.getElementById('modal-etudiant-title').textContent='Ajouter un étudiant';
-});
-
-// ════════════════════════════════════════════════════════════════════
-// MATIÈRES
-// ════════════════════════════════════════════════════════════════════
-function renderMatieres() {
-  const list = DB.get('matieres');
-  document.getElementById('count-matieres').textContent = list.length;
-  const notes = DB.get('notes');
-  document.getElementById('tbody-matieres').innerHTML = list.map(m=>{
-    const nb = notes.filter(n=>n.mId===m.id).length;
-    return `<tr>
-      <td><span style="color:var(--gray-400);font-size:11px;">${m.id}</span></td>
-      <td><strong>${m.nom}</strong></td>
-      <td><span class="badge badge-blue">${m.coef}</span></td>
-      <td>${m.vh||0} h</td>
-      <td><span class="badge badge-gray">${nb}</span></td>
-      <td>
-        <div style="display:flex;gap:5px;">
-          <button class="btn btn-outline btn-icon" onclick="editMatiere(${m.id})">✏️</button>
-          <button class="btn btn-danger btn-icon" onclick="deleteMatiere(${m.id})">🗑️</button>
-        </div>
-      </td>
-    </tr>`;
-  }).join('') || `<tr><td colspan="6"><div class="empty"><p>Aucune matière.</p></div></td></tr>`;
-}
-
-function saveMatiere() {
-  const nom = document.getElementById('f-mat-nom').value.trim();
-  if (!nom) { flash('Nom obligatoire.','error'); return; }
-  const editId = parseInt(document.getElementById('matiere-edit-id').value)||0;
-  const list = DB.get('matieres');
-  const data = { nom, coef: parseFloat(document.getElementById('f-mat-coef').value)||1, vh: parseInt(document.getElementById('f-mat-vh').value)||0 };
-  if (editId) {
-    const i = list.findIndex(m=>m.id===editId);
-    if(i>=0) list[i]={...list[i],...data};
-    DB.set('matieres',list); flash('Matière modifiée.');
-  } else {
-    list.push({id:DB.nextId('matieres'),...data});
-    DB.set('matieres',list); flash('Matière ajoutée.');
-  }
-  closeModal('modal-matiere'); renderMatieres(); populateSelects();
-}
-
-function editMatiere(id) {
-  const m = getMatiere(id);
-  document.getElementById('matiere-edit-id').value=m.id;
-  document.getElementById('f-mat-nom').value=m.nom;
-  document.getElementById('f-mat-coef').value=m.coef;
-  document.getElementById('f-mat-vh').value=m.vh||0;
-  document.getElementById('modal-matiere-title').textContent='Modifier la matière';
-  openModal('modal-matiere');
-}
-
-function deleteMatiere(id) {
-  if(!confirm('Supprimer cette matière ?')) return;
-  DB.set('matieres', DB.get('matieres').filter(m=>m.id!==id));
-  DB.set('notes', DB.get('notes').filter(n=>n.mId!==id));
-  DB.set('absences', DB.get('absences').filter(a=>a.mId!==id));
-  DB.set('emplois', DB.get('emplois').filter(e=>e.mId!==id));
-  flash('Matière supprimée.'); renderMatieres(); populateSelects();
-}
-
-// ════════════════════════════════════════════════════════════════════
-// NOTES
-// ════════════════════════════════════════════════════════════════════
-function renderNotes() {
-  const fE = document.getElementById('filter-note-etudiant')?.value;
-  const fM = document.getElementById('filter-note-matiere')?.value;
-  let list = DB.get('notes');
-  if (fE) list = list.filter(n=>n.eId==fE);
-  if (fM) list = list.filter(n=>n.mId==fM);
-  list = [...list].sort((a,b)=>b.date.localeCompare(a.date));
-  document.getElementById('count-notes').textContent = list.length+' note(s)';
-
-  const typeBadge = {DS:'blue', TP:'orange', 'Examen final':'red', 'Devoir':'purple'};
-  document.getElementById('tbody-notes').innerHTML = list.map(n=>{
-    const v = n.val; const cls = v>=12?'green':v>=10?'orange':'red';
-    return `<tr>
-      <td><strong>${nomEtudiant(n.eId)}</strong></td>
-      <td style="font-size:12px;">${nomMatiere(n.mId)}</td>
-      <td><span class="badge badge-${typeBadge[n.type]||'gray'}">${n.type}</span></td>
-      <td><strong style="font-size:15px;">${v}</strong><span style="color:var(--gray-400);font-size:12px;">/20</span></td>
-      <td style="color:var(--gray-400);font-size:12px;">${fmtDate(n.date)}</td>
-      <td>
-        <div style="display:flex;gap:5px;">
-          <button class="btn btn-outline btn-icon" onclick="editNote(${n.id})">✏️</button>
-          <button class="btn btn-danger btn-icon" onclick="deleteNote(${n.id})">🗑️</button>
-        </div>
-      </td>
-    </tr>`;
-  }).join('') || `<tr><td colspan="6"><div class="empty"><p>Aucune note.</p></div></td></tr>`;
-}
-
-function renderMoyennes() {
-  const etudiants = DB.get('etudiants');
-  const matieres  = DB.get('matieres');
-  const rows = [];
-  etudiants.forEach(e=>{
-    matieres.forEach(m=>{
-      const moy = avgEtudiantMatiere(e.id, m.id);
-      if (moy!==null) rows.push({e,m,moy});
-    });
-  });
-  document.getElementById('tbody-moyennes').innerHTML = rows.map(r=>`
-    <tr>
-      <td style="font-size:12px;">${r.e.prenom} ${r.e.nom}</td>
-      <td style="font-size:12px;">${r.m.nom}</td>
-      <td>${badgeMoy(r.moy)}</td>
-    </tr>
-  `).join('') || `<tr><td colspan="3"><p style="text-align:center;padding:1rem;color:var(--gray-400);">Aucune donnée</p></td></tr>`;
-}
-
-function saveNote() {
-  const eId = parseInt(document.getElementById('f-note-etudiant').value);
-  const mId = parseInt(document.getElementById('f-note-matiere').value);
-  const val = parseFloat(document.getElementById('f-note-val').value);
-  if (!eId||!mId||isNaN(val)||val<0||val>20) { flash('Champs invalides (note 0-20).','error'); return; }
-  const editId = parseInt(document.getElementById('note-edit-id').value)||0;
-  const list = DB.get('notes');
-  const data = { eId, mId, val, type: document.getElementById('f-note-type').value, date: document.getElementById('f-note-date').value };
-  if (editId) {
-    const i = list.findIndex(n=>n.id===editId);
-    if(i>=0) list[i]={...list[i],...data};
-    DB.set('notes',list); flash('Note modifiée.');
-  } else {
-    list.push({id:DB.nextId('notes'),...data});
-    DB.set('notes',list); flash('Note ajoutée.');
-  }
-  closeModal('modal-note'); renderNotes(); renderMoyennes(); renderDashboard();
-}
-
-function editNote(id) {
-  const n = DB.get('notes').find(x=>x.id===id);
-  document.getElementById('note-edit-id').value=n.id;
-  populateSelects();
-  document.getElementById('f-note-etudiant').value=n.eId;
-  document.getElementById('f-note-matiere').value=n.mId;
-  document.getElementById('f-note-val').value=n.val;
-  document.getElementById('f-note-type').value=n.type;
-  document.getElementById('f-note-date').value=n.date;
-  document.getElementById('modal-note-title').textContent='Modifier la note';
-  openModal('modal-note');
-}
-
-function deleteNote(id) {
-  if(!confirm('Supprimer cette note ?')) return;
-  DB.set('notes', DB.get('notes').filter(n=>n.id!==id));
-  flash('Note supprimée.'); renderNotes(); renderMoyennes(); renderDashboard();
-}
-
-function renderAbsences() {
-  const fE = document.getElementById('filter-abs-etudiant')?.value;
-  const fS = document.getElementById('filter-abs-statut')?.value;
-  let list = DB.get('absences');
-  if (fE) list = list.filter(a=>a.eId==fE);
-  if (fS) list = list.filter(a=>a.just===fS);
-  list = [...list].sort((a,b)=>b.date.localeCompare(a.date));
-  document.getElementById('count-absences').textContent = list.length+' absence(s)';
-
-  document.getElementById('tbody-absences').innerHTML = list.map(a=>`
-    <tr>
-      <td><strong>${nomEtudiant(a.eId)}</strong></td>
-      <td style="font-size:12px;">${nomMatiere(a.mId)}</td>
-      <td>${fmtDate(a.date)}</td>
-      <td><span class="badge badge-gray">S${a.seance}</span></td>
-      <td>${a.just==='O'?'<span class="badge badge-green">✓ Justifiée</span>':'<span class="badge badge-red">✗ Non justifiée</span>'}</td>
-      <td>
-        <div style="display:flex;gap:5px;">
-          ${a.just==='N'?`<button class="btn btn-outline btn-icon" onclick="justifyAbsence(${a.id})" title="Justifier">✓</button>`:''}
-          <button class="btn btn-outline btn-icon" onclick="editAbsence(${a.id})">✏️</button>
-          <button class="btn btn-danger btn-icon" onclick="deleteAbsence(${a.id})">🗑️</button>
-        </div>
-      </td>
-    </tr>
-  `).join('') || `<tr><td colspan="6"><div class="empty"><p>Aucune absence.</p></div></td></tr>`;
-}
-
-function renderAbsStats() {
-  const etudiants = DB.get('etudiants');
-  const absences  = DB.get('absences');
-  document.getElementById('tbody-abs-stats').innerHTML = etudiants.map(e=>{
-    const abs = absences.filter(a=>a.eId===e.id);
-    const inj = abs.filter(a=>a.just==='N').length;
-    const jus = abs.filter(a=>a.just==='O').length;
-    if (!abs.length) return '';
-    return `<tr>
-      <td style="font-size:12px;">${e.prenom} ${e.nom}</td>
-      <td><span class="badge badge-gray">${abs.length}</span></td>
-      <td>${inj>0?`<span class="badge badge-red">${inj}</span>`:'<span class="badge badge-green">0</span>'}</td>
-      <td><span class="badge badge-green">${jus}</span></td>
-    </tr>`;
-  }).join('') || `<tr><td colspan="4"><p style="text-align:center;padding:1rem;color:var(--gray-400);">Aucune absence</p></td></tr>`;
-}
-
-function justifyAbsence(id) {
-  const list = DB.get('absences');
-  const i = list.findIndex(a=>a.id===id);
-  if(i>=0) list[i].just='O';
-  DB.set('absences',list); flash('Absence justifiée.'); renderAbsences(); renderAbsStats(); renderDashboard();
-}
-
-function saveAbsence() {
-  const eId = parseInt(document.getElementById('f-abs-etudiant').value);
-  const mId = parseInt(document.getElementById('f-abs-matiere').value);
-  if(!eId||!mId) { flash('Étudiant et matière obligatoires.','error'); return; }
-  const editId = parseInt(document.getElementById('absence-edit-id').value)||0;
-  const list = DB.get('absences');
-  const data = { eId, mId, date: document.getElementById('f-abs-date').value, seance: parseInt(document.getElementById('f-abs-seance').value)||1, just: document.getElementById('f-abs-just').value };
-  if(editId){
-    const i=list.findIndex(a=>a.id===editId);
-    if(i>=0) list[i]={...list[i],...data};
-    DB.set('absences',list); flash('Absence modifiée.');
-  } else {
-    list.push({id:DB.nextId('absences'),...data});
-    DB.set('absences',list); flash('Absence enregistrée.');
-  }
-  closeModal('modal-absence'); renderAbsences(); renderAbsStats(); renderDashboard();
-}
-
-function editAbsence(id) {
-  const a = DB.get('absences').find(x=>x.id===id);
-  document.getElementById('absence-edit-id').value=a.id;
-  populateSelects();
-  document.getElementById('f-abs-etudiant').value=a.eId;
-  document.getElementById('f-abs-matiere').value=a.mId;
-  document.getElementById('f-abs-date').value=a.date;
-  document.getElementById('f-abs-seance').value=a.seance;
-  document.getElementById('f-abs-just').value=a.just;
-  document.getElementById('modal-absence-title').textContent='Modifier l\'absence';
-  openModal('modal-absence');
-}
-
-function deleteAbsence(id) {
-  if(!confirm('Supprimer ?')) return;
-  DB.set('absences', DB.get('absences').filter(a=>a.id!==id));
-  flash('Absence supprimée.'); renderAbsences(); renderAbsStats(); renderDashboard();
-}
-
-// ════════════════════════════════════════════════════════════════════
-// EMPLOI DU TEMPS
-// ════════════════════════════════════════════════════════════════════
-function renderTimetable() {
-  const jours = ['Lundi','Mardi','Mercredi','Jeudi','Vendredi'];
-  const heures = ['08:00','09:00','10:00','11:00','12:00','13:00','14:00','15:00','16:00','17:00'];
-  const emplois = DB.get('emplois');
-  const byJour = {};
-  jours.forEach(j=>byJour[j]=[]);
-  emplois.forEach(e=>{ if(byJour[e.jour]) byJour[e.jour].push(e); });
-
-  let html = `<div class="tt-h" style="background:var(--navy);">Heure</div>`;
-  jours.forEach(j=>html+=`<div class="tt-h">${j}</div>`);
-
-  heures.forEach(h=>{
-    html += `<div class="tt-time">${h}</div>`;
-    jours.forEach(j=>{
-      const seances = byJour[j].filter(e=>e.debut===h);
-      html += `<div class="tt-cell">${seances.map(e=>`
-        <div class="tt-event">
-          <strong>${nomMatiere(e.mId)}</strong>
-          <span>${e.prof}</span>
-          <span>${e.debut}–${e.fin}${e.salle?' · '+e.salle:''}</span>
-        </div>`).join('')}</div>`;
-    });
-  });
-  document.getElementById('timetable-grid').innerHTML = html;
-}
-
-function renderEmploi() {
-  const list = DB.get('emplois');
-  document.getElementById('count-emploi').textContent = list.length;
-  const jours = ['Lundi','Mardi','Mercredi','Jeudi','Vendredi','Samedi'];
-  const sorted = [...list].sort((a,b)=>jours.indexOf(a.jour)-jours.indexOf(b.jour)||a.debut.localeCompare(b.debut));
-  document.getElementById('tbody-emploi').innerHTML = sorted.map(e=>`
-    <tr>
-      <td><span class="badge badge-blue">${e.jour}</span></td>
-      <td class="mono">${e.debut} → ${e.fin}</td>
-      <td>${nomMatiere(e.mId)}</td>
-      <td>${e.prof}</td>
-      <td>${e.salle||'—'}</td>
-      <td>
-        <div style="display:flex;gap:5px;">
-          <button class="btn btn-outline btn-icon" onclick="editEmploi(${e.id})">✏️</button>
-          <button class="btn btn-danger btn-icon" onclick="deleteEmploi(${e.id})">🗑️</button>
-        </div>
-      </td>
-    </tr>
-  `).join('') || `<tr><td colspan="6"><div class="empty"><p>Aucune séance.</p></div></td></tr>`;
-}
-
-function saveEmploi() {
-  const mId = parseInt(document.getElementById('f-emp-matiere').value);
-  const prof = document.getElementById('f-emp-prof').value.trim();
-  const debut = document.getElementById('f-emp-debut').value;
-  const fin   = document.getElementById('f-emp-fin').value;
-  if(!mId||!prof||!debut||!fin) { flash('Tous les champs sont obligatoires.','error'); return; }
-  const editId = parseInt(document.getElementById('emploi-edit-id').value)||0;
-  const list = DB.get('emplois');
-  const data = { jour: document.getElementById('f-emp-jour').value, debut, fin, salle: document.getElementById('f-emp-salle').value.trim(), prof, mId };
-  if(editId){
-    const i=list.findIndex(e=>e.id===editId);
-    if(i>=0) list[i]={...list[i],...data};
-    DB.set('emplois',list); flash('Séance modifiée.');
-  } else {
-    list.push({id:DB.nextId('emplois'),...data});
-    DB.set('emplois',list); flash('Séance ajoutée.');
-  }
-  closeModal('modal-emploi'); renderEmploi(); renderTimetable();
-}
-
-function editEmploi(id) {
-  const e = DB.get('emplois').find(x=>x.id===id);
-  document.getElementById('emploi-edit-id').value=e.id;
-  populateSelects();
-  document.getElementById('f-emp-jour').value=e.jour;
-  document.getElementById('f-emp-debut').value=e.debut;
-  document.getElementById('f-emp-fin').value=e.fin;
-  document.getElementById('f-emp-salle').value=e.salle||'';
-  document.getElementById('f-emp-prof').value=e.prof;
-  document.getElementById('f-emp-matiere').value=e.mId;
-  document.getElementById('modal-emploi-title').textContent='Modifier la séance';
-  openModal('modal-emploi');
-}
-
-function deleteEmploi(id) {
-  if(!confirm('Supprimer cette séance ?')) return;
-  DB.set('emplois', DB.get('emplois').filter(e=>e.id!==id));
-  flash('Séance supprimée.'); renderEmploi(); renderTimetable();
-}
-
-function renderSchema() {
-  const e = DB.get('etudiants').length;
-  const m = DB.get('matieres').length;
-  const n = DB.get('notes').length;
-  const a = DB.get('absences').length;
-  const em = DB.get('emplois').length;
-  document.getElementById('schema-stats').innerHTML = `
-    <div style="display:flex;flex-direction:column;gap:.75rem;">
-      ${[
-        {l:'Étudiants enregistrés', v:e, c:'blue'},
-        {l:'Matières',              v:m, c:'blue'},
-        {l:'Notes saisies',         v:n, c:'orange'},
-        {l:'Absences enregistrées', v:a, c:'red'},
-        {l:'Séances emploi temps',  v:em,c:'navy'},
-      ].map(s=>`
-        <div style="display:flex;align-items:center;justify-content:space-between;padding:.5rem .75rem;background:var(--gray-50);border-radius:6px;">
-          <span style="font-size:13px;color:var(--gray-600);">${s.l}</span>
-          <span class="badge badge-${s.c}">${s.v}</span>
-        </div>
-      `).join('')}
-    </div>
-  `;
-}
-
-function init() {
-  seedDemo();
-  // Date
-  const d = new Date();
-  document.getElementById('topbar-date').textContent =
-    d.toLocaleDateString('fr-FR', {weekday:'long',year:'numeric',month:'long',day:'numeric'});
-  // Default date fields
-  document.querySelectorAll('input[type="date"]').forEach(i=>{ if(!i.value) i.value=new Date().toISOString().split('T')[0]; });
-  // Init dashboard
-  renderDashboard();
-  populateSelects();
-}
-
-init();
-</script>
+    <script>
+        // --- BASE DE DONNÉES SIMULÉE (LocalStorage pour conserver les modifications lors du rafraîchissement) ---
+        let db = {
+            etudiants: JSON.parse(localStorage.getItem('db_etudiants')) || [
+                { id: 1, nom: "Alaoui", prenom: "Amine", email: "amine@supmti.ma", tel: "0612345678" },
+                { id: 2, nom: "Benjelloun", prenom: "Sara", email: "sara@supmti.ma", tel: "0676543210" },
+                { id: 3, nom: "Chraibi", prenom: "Omar", email: "omar@supmti.ma", tel: "0655443322" }
+            ],
+            matieres: {
+                "1": "Web Dynamique (PHP/MySQL)",
+                "2": "Intelligence Artificielle",
+                "3": "Automatisation & Scripts",
+                "4": "Architecture Java OOPS"
+            },
+            notes: JSON.parse(localStorage.getItem('db_notes')) || [
+                { id_etudiant: 1, id_matiere: "1", type: "Contrôle Continu", valeur: 15, date: "2026-05-10" },
+                { id_etudiant: 1, id_matiere: "2", type: "Examen Terminal", valeur: 14, date: "2026-05-12" },
+                { id_etudiant: 2, id_matiere: "1", type: "Contrôle Continu", valeur: 17, date: "2026-05-10" },
+                { id_etudiant: 3, id_matiere: "3", type: "TP Pratique", valeur: 11, date: "2026-05-14" }
+            ],
+            absences: JSON.parse(localStorage.getItem('db_absences')) || [
+                { id: 1, id_etudiant: 3, seance: "Web PHP/MySQL", date: "2026-06-01", justifiee: false },
+                { id: 2, id_etudiant: 1, seance: "Architecture Java", date: "2026-06-03", justifiee: true }
+            ]
+        };
+
+        function saveDB() {
+            localStorage.setItem('db_etudiants', JSON.stringify(db.etudiants));
+            localStorage.setItem('db_notes', JSON.stringify(db.notes));
+            localStorage.setItem('db_absences', JSON.stringify(db.absences));
+            updateDashboardMetrics();
+        }
+
+        // --- ROUTAGE INTERNE SIMPLE ---
+        function switchPage(pageId) {
+            document.querySelectorAll('.page-section').forEach(sec => sec.classList.remove('active'));
+            document.querySelectorAll('.nav-links li').forEach(li => li.classList.remove('active'));
+            
+            document.getElementById(pageId).classList.add('active');
+            
+            // Retrouver l'élément li cliqué pour le style actif
+            const links = document.querySelectorAll('.nav-links li');
+            if(pageId === 'dashboard') links[0].classList.add('active');
+            if(pageId === 'students') links[1].classList.add('active');
+            if(pageId === 'notes') links[2].classList.add('active');
+            if(pageId === 'absences') links[3].classList.add('active');
+            if(pageId === 'timetable') links[4].classList.add('active');
+
+            // Mettre à jour les titres dynamiques de la page
+            const titles = { dashboard: "Tableau de bord", students: "Gestion des Étudiants", notes: "Saisie des Notes", absences: "Registre des Absences", timetable: "Emploi du Temps" };
+            document.getElementById('page-title').innerText = titles[pageId];
+            
+            // Rafraîchir les rendus de table appropriés
+            if(pageId === 'dashboard') updateDashboardMetrics();
+            if(pageId === 'students') renderStudents();
+            if(pageId === 'notes') renderNotes();
+            if(pageId === 'absences') renderAbsences();
+        }
+
+        // --- INTERFACES MODALES ---
+        function openModal(id) {
+            document.getElementById(id).style.display = 'flex';
+            if (id === 'note-modal' || id === 'absence-modal') {
+                populateStudentSelects();
+            }
+        }
+        function closeModal(id) { document.getElementById(id).style.display = 'none'; }
+
+        function populateStudentSelects() {
+            const noteSelect = document.getElementById('note-student-select');
+            const absSelect = document.getElementById('abs-student-select');
+            let options = db.etudiants.map(e => `<option value="${e.id}">${e.nom} ${e.prenom}</option>`).join('');
+            if(noteSelect) noteSelect.innerHTML = options;
+            if(absSelect) absSelect.innerHTML = options;
+        }
+
+        // --- ENGINES FONCTIONNELS ---
+
+        // 1. DASHBOARD COMPILATION
+        function updateDashboardMetrics() {
+            document.getElementById('dash-total-students').innerText = db.etudiants.length;
+            
+            let nonJustifiees = db.absences.filter(a => !a.justifiee).length;
+            document.getElementById('dash-unjustified-abs').innerText = nonJustifiees;
+
+            // Calcul de la Moyenne Générale Réelle
+            if(db.notes.length > 0) {
+                let total = db.notes.reduce((sum, n) => sum + parseFloat(n.valeur), 0);
+                document.getElementById('dash-general-average').innerText = (total / db.notes.length).toFixed(2) + " /20";
+            } else {
+                document.getElementById('dash-general-average').innerText = "0.00 /20";
+            }
+
+            // Remplissage Tableau Classement Général
+            let rankingData = db.etudiants.map(e => {
+                let eNotes = db.notes.filter(n => n.id_etudiant == e.id);
+                let moy = eNotes.length > 0 ? (eNotes.reduce((s, n) => s + n.valeur, 0) / eNotes.length).toFixed(2) : "N/A";
+                return { name: e.nom + ' ' + e.prenom, moyenne: moy };
+            }).sort((a,b) => (b.moyenne === 'N/A' ? -1 : parseFloat(b.moyenne)) - (a.moyenne === 'N/A' ? -1 : parseFloat(a.moyenne)));
+
+            let rankBody = document.getElementById('dash-ranking-table').querySelector('tbody');
+            rankBody.innerHTML = rankingData.map((r, i) => `
+                <tr>
+                    <td><strong>#${i+1}</strong></td>
+                    <td>${r.name}</td>
+                    <td><span class="btn ${parseFloat(r.moyenne) >= 10 ? 'btn-success' : 'btn-secondary'}" style="padding: 2px 8px; font-size:0.85rem">${r.moyenne}</span></td>
+                </tr>
+            `).join('');
+
+            // Remplissage Absences Récentes
+            let absBody = document.getElementById('dash-abs-table').querySelector('tbody');
+            absBody.innerHTML = db.absences.slice(-4).reverse().map(a => {
+                let e = db.etudiants.find(stud => stud.id == a.id_etudiant);
+                return `<tr><td>${e ? e.nom : 'Inconnu'}</td><td>${a.seance}</td></tr>`;
+            }).join('');
+        }
+
+        // 2. ÉTUDIANTS (CRUD)
+        function renderStudents(list = db.etudiants) {
+            const tbody = document.querySelector('#students-table tbody');
+            tbody.innerHTML = list.map(e => `
+                <tr>
+                    <td>${e.id}</td>
+                    <td><strong>${e.nom}</strong></td>
+                    <td>${e.prenom}</td>
+                    <td>${e.email}</td>
+                    <td>${e.tel}</td>
+                    <td>
+                        <button class="btn btn-danger" style="padding:3px 8px; font-size:0.8rem;" onclick="deleteStudent(${e.id})">Supprimer</button>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        function addStudent(e) {
+            e.preventDefault();
+            let newId = db.etudiants.length > 0 ? Math.max(...db.etudiants.map(o => o.id)) + 1 : 1;
+            db.etudiants.push({
+                id: newId,
+                nom: document.getElementById('stud-nom').value,
+                prenom: document.getElementById('stud-prenom').value,
+                email: document.getElementById('stud-email').value,
+                tel: document.getElementById('stud-tel').value
+            });
+            saveDB(); renderStudents(); closeModal('student-modal');
+            document.getElementById('student-form').reset();
+        }
+
+        function deleteStudent(id) {
+            if(confirm("Voulez-vous vraiment retirer cet étudiant ?")) {
+                db.etudiants = db.etudiants.filter(e => e.id !== id);
+                db.notes = db.notes.filter(n => n.id_etudiant !== id);
+                db.absences = db.absences.filter(a => a.id_etudiant !== id);
+                saveDB(); renderStudents();
+            }
+        }
+
+        function filterStudents() {
+            let val = document.getElementById('search-student').value.toLowerCase();
+            let res = db.etudiants.filter(e => e.nom.toLowerCase().includes(val) || e.prenom.toLowerCase().includes(val));
+            renderStudents(res);
+        }
+
+        // 3. NOTES ACTIONS
+        function renderNotes() {
+            const tbody = document.querySelector('#notes-table tbody');
+            const filterMat = document.getElementById('filter-note-matiere').value;
+            
+            let filteredNotes = filterMat === 'all' ? db.notes : db.notes.filter(n => n.id_matiere === filterMat);
+
+            tbody.innerHTML = filteredNotes.map(n => {
+                let e = db.etudiants.find(stud => stud.id == n.id_etudiant);
+                return `
+                    <tr>
+                        <td><strong>${e ? e.nom + ' ' + e.prenom : 'Anonyme'}</strong></td>
+                        <td>${db.matieres[n.id_matiere]}</td>
+                        <td>${n.type}</td>
+                        <td><strong>${n.valeur} /20</strong></td>
+                        <td>${n.date}</td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        function addNote(e) {
+            e.preventDefault();
+            db.notes.push({
+                id_etudiant: parseInt(document.getElementById('note-student-select').value),
+                id_matiere: document.getElementById('note-matiere-select').value,
+                type: document.getElementById('note-type').value,
+                valeur: parseFloat(document.getElementById('note-valeur').value),
+                date: new Date().toISOString().split('T')[0]
+            });
+            saveDB(); renderNotes(); closeModal('note-modal');
+            document.getElementById('note-form').reset();
+        }
+
+        // 4. ABSENCES ACTIONS
+        function renderAbsences() {
+            const tbody = document.querySelector('#absences-table tbody');
+            tbody.innerHTML = db.absences.map(a => {
+                let e = db.etudiants.find(stud => stud.id == a.id_etudiant);
+                return `
+                    <tr>
+                        <td>${a.date}</td>
+                        <td><strong>${e ? e.nom + ' ' + e.prenom : 'Inconnu'}</strong></td>
+                        <td>${a.seance}</td>
+                        <td>
+                            <span class="btn ${a.justifiee ? 'btn-success' : 'btn-secondary'}" style="padding:2px 8px; font-size:0.8rem;">
+                                ${a.justifiee ? 'Justifiée' : 'Non Justifiée'}
+                            </span>
+                        </td>
+                        <td>
+                            ${!a.justifiee ? `<button class="btn btn-primary" style="padding:2px 6px; font-size:0.75rem;" onclick="toggleJustify(${a.id})">Justifier en 1-clic</button>` : '---'}
+                        </td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        function addAbsence(e) {
+            e.preventDefault();
+            let newId = db.absences.length > 0 ? Math.max(...db.absences.map(o => o.id)) + 1 : 1;
+            db.absences.push({
+                id: newId,
+                id_etudiant: parseInt(document.getElementById('abs-student-select').value),
+                seance: document.getElementById('abs-matiere').value,
+                date: new Date().toISOString().split('T')[0],
+                justifiee: false
+            });
+            saveDB(); renderAbsences(); closeModal('absence-modal');
+        }
+
+        function toggleJustify(id) {
+            let abs = db.absences.find(a => a.id === id);
+            if(abs) { abs.justifiee = true; saveDB(); renderAbsences(); }
+        }
+
+        // --- INITIALISATION AU CHARGEMENT ---
+        window.onload = function() {
+            updateDashboardMetrics();
+        };
+    </script>
 </body>
 </html>
