@@ -4,9 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gestion de Classe - SUP MTI Béni Mellal</title>
-    <!-- Site développé par Youssef Lachhab -->
+    <!-- Projet développé par Youssef Lachhab - 2ème année ISI -->
     <style>
-        /* --- DESIGN SYSTEM (SUP MTI BRANDING) --- */
+        /* --- DESIGN SYSTEM (SUP MTI BRANDING & GLASSMORPHISM) --- */
         :root {
             --primary-teal: #007A78;
             --secondary-red: #E30613;
@@ -17,7 +17,7 @@
             --success-green: #48BB78;
             --warning-yellow: #ECC94B;
             --danger-red: #E53E3E;
-            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
         }
 
         * {
@@ -35,7 +35,7 @@
             overflow-x: hidden;
         }
 
-        /* --- SIDEBAR DE NAVIGATION --- */
+        /* --- SIDEBAR LATÉRALE --- */
         aside {
             width: 260px;
             background-color: var(--white);
@@ -109,14 +109,69 @@
             line-height: 1.4;
         }
 
-        /* --- ZONE CONTENU PRINCIPAL --- */
+        /* --- PORTAIL PRINCIPAL --- */
         main {
             margin-left: 260px;
             flex-grow: 1;
-            padding: 40px;
+            padding: 30px 40px;
             min-height: 100vh;
         }
 
+        /* --- BARRE DE SÉLECTION DE RÔLE (VUE DYNAMIQUE) --- */
+        .role-selector-bar {
+            background: var(--white);
+            padding: 15px 25px;
+            border-radius: 12px;
+            box-shadow: var(--shadow);
+            margin-bottom: 25px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-left: 5px solid var(--secondary-red);
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .role-title {
+            font-weight: 700;
+            font-size: 0.95rem;
+            color: #4A5568;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .role-btn-group {
+            display: flex;
+            gap: 10px;
+        }
+
+        .role-btn {
+            padding: 8px 16px;
+            border: 1px solid var(--gray-border);
+            border-radius: 8px;
+            background: white;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.85rem;
+            transition: all 0.2s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .role-btn.active {
+            background-color: var(--secondary-red);
+            color: white;
+            border-color: var(--secondary-red);
+        }
+
+        .student-switcher {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        /* --- HEADER --- */
         main header {
             display: flex;
             justify-content: space-between;
@@ -140,7 +195,7 @@
         .avatar {
             width: 35px;
             height: 35px;
-            background-color: var(--secondary-red);
+            background-color: var(--primary-teal);
             color: white;
             border-radius: 50%;
             display: flex;
@@ -206,7 +261,7 @@
             margin-bottom: 20px;
         }
 
-        /* --- FORMULAIRES & COMPOSANTS CONTROLE --- */
+        /* --- FORMULAIRES --- */
         .input-bar {
             display: flex;
             gap: 12px;
@@ -220,7 +275,7 @@
             border-radius: 8px;
             outline: none;
             font-size: 0.95rem;
-            min-width: 200px;
+            background: white;
         }
 
         .form-input:focus {
@@ -316,6 +371,7 @@
             border-radius: 6px;
             min-height: 90px;
             box-shadow: 0 2px 4px rgba(0,0,0,0.04);
+            position: relative;
         }
         .empty-card {
             background: #EDF2F7;
@@ -326,6 +382,18 @@
         .lesson-name { font-weight: 700; color: var(--dark-blue); font-size: 0.9rem; }
         .lesson-prof { color: #4A5568; font-style: italic; font-size: 0.8rem; margin-top: 2px; }
         .lesson-room { font-size: 0.75rem; color: #718096; margin-top: 6px; font-weight: 600; }
+
+        .delete-lesson-btn {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            background: none;
+            border: none;
+            color: var(--danger-red);
+            cursor: pointer;
+            font-size: 0.8rem;
+            display: none; /* Affiché uniquement pour l'admin */
+        }
 
         /* --- MODALS CONTENEURS --- */
         .modal-overlay {
@@ -344,6 +412,11 @@
         .modal-window h3 { margin-bottom: 20px; color: var(--primary-teal); border-bottom: 1px solid var(--gray-border); padding-bottom: 10px;}
         .field-group { margin-bottom: 16px; display: flex; flex-direction: column; gap: 6px; }
         .field-group label { font-weight: 600; font-size: 0.9rem; }
+
+        /* Restriktions sur les rôles */
+        .admin-only, .prof-only, .writable-only {
+            display: none;
+        }
 
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(-10px); }
@@ -375,14 +448,33 @@
 
     <!-- ZONE PRINCIPALE DE TRAVAIL -->
     <main>
+        <!-- BARRE DE SÉLECTION DE RÔLE -->
+        <div class="role-selector-bar">
+            <div>
+                <span class="role-title">Espace Actuel : </span>
+                <span id="display-active-role-text" style="font-weight: 800; color: var(--secondary-red);">ADMINISTRATEUR</span>
+            </div>
+            <div class="role-btn-group">
+                <button class="role-btn active" id="btn-role-admin" onclick="switchUserRole('admin')">👤 Admin</button>
+                <button class="role-btn" id="btn-role-prof" onclick="switchUserRole('prof')">👨‍🏫 Professeur</button>
+                <button class="role-btn" id="btn-role-student" onclick="switchUserRole('student')">🎓 Étudiant</button>
+            </div>
+            <div class="student-switcher" id="box-student-switcher" style="display: none;">
+                <label style="font-weight:600; font-size:0.85rem;">Simuler l'étudiant :</label>
+                <select id="select-active-student" class="form-input" style="padding:5px 10px; min-width:150px;" onchange="changeActiveStudent(this.value)">
+                    <!-- Rempli en JS -->
+                </select>
+            </div>
+        </div>
+
         <header>
             <div>
                 <h1 id="main-view-title">Tableau de bord</h1>
-                <p style="color: #718096; font-size: 0.9rem; margin-top: 2px;">Rapport de Projet — Gestion de Classe (Merise Normalisé)</p>
+                <p style="color: #718096; font-size: 0.9rem; margin-top: 2px;">Rapport de Projet — Gestion de Classe (Merise MLD)</p>
             </div>
             <div class="profile-badge">
-                <span>Formateur Admin</span>
-                <div class="avatar">YL</div>
+                <span id="user-display-name">Administrateur Principal</span>
+                <div class="avatar" id="user-display-avatar">AP</div>
             </div>
         </header>
 
@@ -390,15 +482,15 @@
         <section id="view-dash" class="section-page active-page">
             <div class="stats-container">
                 <div class="stat-card">
-                    <h3>Effectif Étudiants</h3>
+                    <h3 id="stat-label-1">Effectif Étudiants</h3>
                     <div class="num" id="card-count-students">0</div>
                 </div>
                 <div class="stat-card accent-card">
-                    <h3>Moyenne Générale</h3>
+                    <h3 id="stat-label-2">Moyenne Générale</h3>
                     <div class="num" id="card-global-avg">0.00</div>
                 </div>
                 <div class="stat-card">
-                    <h3>Non Justifiées</h3>
+                    <h3 id="stat-label-3">Absences non Justifiées</h3>
                     <div class="num" id="card-unjustified-abs">0</div>
                 </div>
                 <div class="stat-card accent-card">
@@ -407,7 +499,7 @@
                 </div>
             </div>
 
-            <div style="display: grid; grid-template-columns: 1.5fr 1fr; gap: 25px;">
+            <div style="display: grid; grid-template-columns: 1.5fr 1fr; gap: 25px;" id="dashboard-grid-layout">
                 <div class="panel">
                     <div class="panel-header"><h2>🏆 Classement des Étudiants</h2></div>
                     <table id="table-dash-ranking">
@@ -442,7 +534,7 @@
             <div class="panel">
                 <div class="panel-header">
                     <h2>Registre des Inscriptions (Table: ETUDIANT)</h2>
-                    <button class="btn btn-primary" onclick="toggleModal('modal-student', true)">+ Inscrire un Étudiant</button>
+                    <button class="btn btn-primary admin-only" onclick="toggleModal('modal-student', true)">+ Inscrire un Étudiant</button>
                 </div>
                 <div class="input-bar">
                     <input type="text" id="search-stud-input" class="form-control form-input" placeholder="Rechercher un nom..." onkeyup="searchStudent()">
@@ -455,7 +547,7 @@
                             <th>Prénom</th>
                             <th>Email</th>
                             <th>Téléphone</th>
-                            <th>Actions</th>
+                            <th class="admin-only">Actions</th>
                         </tr>
                     </thead>
                     <tbody></tbody>
@@ -468,7 +560,7 @@
             <div class="panel">
                 <div class="panel-header">
                     <h2>Évaluation Pédagogique (Table: NOTE)</h2>
-                    <button class="btn btn-primary" onclick="toggleModal('modal-note', true)">+ Saisir une Note</button>
+                    <button class="btn btn-primary writable-only" onclick="toggleModal('modal-note', true)">+ Saisir une Note</button>
                 </div>
                 <div class="input-bar">
                     <select id="select-filter-matiere" class="form-input" onchange="renderNotesView()">
@@ -499,7 +591,7 @@
             <div class="panel">
                 <div class="panel-header">
                     <h2>Suivi des Présences & Absences (Table: ABSENCE)</h2>
-                    <button class="btn btn-secondary" onclick="toggleModal('modal-abs', true)">+ Déclarer une Absence</button>
+                    <button class="btn btn-secondary writable-only" onclick="toggleModal('modal-abs', true)">+ Déclarer une Absence</button>
                 </div>
                 <table id="table-absences">
                     <thead>
@@ -508,7 +600,7 @@
                             <th>Étudiant</th>
                             <th>Séance de Cours</th>
                             <th>Statut</th>
-                            <th>Action Spécifique</th>
+                            <th class="writable-only">Action Spécifique</th>
                         </tr>
                     </thead>
                     <tbody></tbody>
@@ -521,39 +613,11 @@
             <div class="panel">
                 <div class="panel-header">
                     <h2>Grille Hebdomadaire des Cours (Table: EMPLOI_TEMPS)</h2>
+                    <button class="btn btn-primary admin-only" onclick="toggleModal('modal-schedule', true)">+ Ajouter une Séance</button>
                 </div>
                 
-                <div class="grid-schedule">
-                    <div class="sched-header" style="background:#2D3748;">Heures</div>
-                    <div class="sched-header">Lundi</div>
-                    <div class="sched-header">Mardi</div>
-                    <div class="sched-header">Mercredi</div>
-                    <div class="sched-header">Jeudi</div>
-                    <div class="sched-header">Vendredi</div>
-
-                    <!-- Ligne 1 -->
-                    <div class="hour-cell">08:30 - 11:00</div>
-                    <div class="lesson-card"><div class="lesson-name">Web PHP/MySQL</div><div class="lesson-prof">M. Lachhab</div><div class="lesson-room">Salle 3 (ISI)</div></div>
-                    <div class="empty-card"></div>
-                    <div class="lesson-card"><div class="lesson-name">Intelligence Artificielle</div><div class="lesson-prof">M. Lachhab</div><div class="lesson-room">Labo IA</div></div>
-                    <div class="empty-card"></div>
-                    <div class="lesson-card"><div class="lesson-name">Architecture Java</div><div class="lesson-prof">Prof. SUPMTI</div><div class="lesson-room">Amphi A</div></div>
-
-                    <!-- Ligne 2 -->
-                    <div class="hour-cell">11:00 - 13:30</div>
-                    <div class="empty-card"></div>
-                    <div class="lesson-card"><div class="lesson-name">Automatisation</div><div class="lesson-prof">M. Lachhab</div><div class="lesson-room">Labo Réseau</div></div>
-                    <div class="empty-card"></div>
-                    <div class="lesson-card"><div class="lesson-name">Web PHP/MySQL</div><div class="lesson-prof">M. Lachhab</div><div class="lesson-room">Salle 3</div></div>
-                    <div class="empty-card"></div>
-
-                    <!-- Ligne 3 -->
-                    <div class="hour-cell">14:30 - 17:00</div>
-                    <div class="lesson-card"><div class="lesson-name">Projet Pratique</div><div class="lesson-prof">Encadrant ISI</div><div class="lesson-room">Salle Informatique</div></div>
-                    <div class="empty-card"></div>
-                    <div class="lesson-card"><div class="lesson-name">Architecture Java</div><div class="lesson-prof">Prof. SUPMTI</div><div class="lesson-room">Amphi A</div></div>
-                    <div class="empty-card"></div>
-                    <div class="lesson-card"><div class="lesson-name">Mini-Projet IA</div><div class="lesson-prof">M. Lachhab</div><div class="lesson-room">À distance</div></div>
+                <div class="grid-schedule" id="timetable-container">
+                    <!-- Heures et Jours construits dynamiquement en JS pour s'adapter à la BDD -->
                 </div>
             </div>
         </section>
@@ -561,13 +625,14 @@
 
     <!-- ================= MODALS DE SAISIE DE DONNÉES ================= -->
     
-    <!-- MODAL INCRIPTION ETUDIANT -->
+    <!-- MODAL INSCRIPTION ETUDIANT (ADMIN ONLY) -->
     <div id="modal-student" class="modal-overlay">
         <div class="modal-window">
             <h3>Ajouter un nouvel Étudiant</h3>
             <form id="form-add-student" onsubmit="submitStudent(event)">
                 <div class="field-group"><label>Nom de Famille</label><input type="text" id="in-stud-nom" class="form-input" required></div>
                 <div class="field-group"><label>Prénom</label><input type="text" id="in-stud-prenom" class="form-input" required></div>
+                <div class="field-group"><label>Âge</label><input type="number" id="in-stud-age" min="17" max="40" class="form-input" required></div>
                 <div class="field-group"><label>Adresse Email</label><input type="email" id="in-stud-email" class="form-input" required></div>
                 <div class="field-group"><label>N° Téléphone</label><input type="text" id="in-stud-tel" class="form-input" required></div>
                 <div style="display:flex; justify-content:flex-end; gap:10px; margin-top:20px;">
@@ -578,7 +643,7 @@
         </div>
     </div>
 
-    <!-- MODAL AJOUT NOTE -->
+    <!-- MODAL AJOUT NOTE (ADMIN & PROF) -->
     <div id="modal-note" class="modal-overlay">
         <div class="modal-window">
             <h3>Enregistrer une Note d'examen</h3>
@@ -610,7 +675,7 @@
         </div>
     </div>
 
-    <!-- MODAL MARQUER ABSENCE -->
+    <!-- MODAL MARQUER ABSENCE (ADMIN & PROF) -->
     <div id="modal-abs" class="modal-overlay">
         <div class="modal-window">
             <h3>Signaler une Absence</h3>
@@ -633,14 +698,57 @@
         </div>
     </div>
 
+    <!-- MODAL CONFIGURATION EMPLOI DU TEMPS (ADMIN ONLY) -->
+    <div id="modal-schedule" class="modal-overlay">
+        <div class="modal-window">
+            <h3>Ajouter un cours à l'emploi du temps</h3>
+            <form id="form-add-schedule" onsubmit="submitSchedule(event)">
+                <div class="field-group">
+                    <label>Jour de la semaine</label>
+                    <select id="in-sched-day" class="form-input">
+                        <option value="Lundi">Lundi</option>
+                        <option value="Mardi">Mardi</option>
+                        <option value="Mercredi">Mercredi</option>
+                        <option value="Jeudi">Jeudi</option>
+                        <option value="Vendredi">Vendredi</option>
+                    </select>
+                </div>
+                <div class="field-group">
+                    <label>Créneau Horaire</label>
+                    <select id="in-sched-hour" class="form-input">
+                        <option value="08:30 - 11:00">08:30 - 11:00</option>
+                        <option value="11:00 - 13:30">11:00 - 13:30</option>
+                        <option value="14:30 - 17:00">14:30 - 17:00</option>
+                    </select>
+                </div>
+                <div class="field-group">
+                    <label>Matière</label>
+                    <select id="in-sched-matiere" class="form-input">
+                        <option value="Web PHP/MySQL">Web PHP/MySQL</option>
+                        <option value="Intelligence Artificielle">Intelligence Artificielle</option>
+                        <option value="Automatisation">Automatisation</option>
+                        <option value="Architecture Java">Architecture Java</option>
+                        <option value="Projet Pratique">Projet Pratique</option>
+                    </select>
+                </div>
+                <div class="field-group"><label>Nom du Professeur</label><input type="text" id="in-sched-prof" class="form-input" required></div>
+                <div class="field-group"><label>Salle</label><input type="text" id="in-sched-room" class="form-input" placeholder="Salle 3, Amphi A..." required></div>
+                <div style="display:flex; justify-content:flex-end; gap:10px; margin-top:20px;">
+                    <button type="button" class="btn btn-danger" onclick="toggleModal('modal-schedule', false)">Annuler</button>
+                    <button type="submit" class="btn btn-success">Ajouter</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
     <!-- ================= ENGINE LOGIQUE (JAVASCRIPT REPLICA) ================= -->
     <script>
-        // --- BASE DE DONNÉES EN CORE LOCALSTORAGE ---
+        // --- BASE DE DONNÉES DE SIMULATION EN LOCALSTORAGE ---
         let storage = {
-            etudiants: JSON.parse(localStorage.getItem('mti_stud')) || [
-                { id: 101, nom: "Alaoui", prenom: "Amine", email: "amine.alaoui@supmti.ma", tel: "0612345678" },
-                { id: 102, nom: "Benjelloun", prenom: "Sara", email: "sara.benj@supmti.ma", tel: "0676543210" },
-                { id: 103, nom: "Chraibi", prenom: "Omar", email: "o.chraibi@supmti.ma", tel: "0655443322" }
+            etudiants: JSON.parse(localStorage.getItem('mti_stud_rel')) || [
+                { id: 101, nom: "Alaoui", prenom: "Amine", age: 20, email: "amine.alaoui@supmti.ma", tel: "0612345678" },
+                { id: 102, nom: "Benjelloun", prenom: "Sara", age: 21, email: "sara.benj@supmti.ma", tel: "0676543210" },
+                { id: 103, nom: "Chraibi", prenom: "Omar", age: 20, email: "o.chraibi@supmti.ma", tel: "0655443322" }
             ],
             matieres: {
                 "1": "Web Dynamique (PHP/MySQL)",
@@ -648,35 +756,146 @@
                 "3": "Automatisation & Scripts",
                 "4": "Architecture Java OOPS"
             },
-            notes: JSON.parse(localStorage.getItem('mti_notes')) || [
+            notes: JSON.parse(localStorage.getItem('mti_notes_rel')) || [
                 { id_etudiant: 101, id_matiere: "1", type: "Contrôle Continu", valeur: 15.5, date: "2026-06-01" },
                 { id_etudiant: 101, id_matiere: "2", type: "Examen Terminal", valeur: 14, date: "2026-06-02" },
                 { id_etudiant: 102, id_matiere: "1", type: "Contrôle Continu", valeur: 18.25, date: "2026-06-01" },
                 { id_etudiant: 103, id_matiere: "3", type: "TP Pratique", valeur: 11.5, date: "2026-06-04" }
             ],
-            absences: JSON.parse(localStorage.getItem('mti_abs')) || [
+            absences: JSON.parse(localStorage.getItem('mti_abs_rel')) || [
                 { id: 1, id_etudiant: 103, seance: "Web PHP/MySQL", date: "2026-06-05", justifiee: false },
                 { id: 2, id_etudiant: 101, seance: "Architecture Java", date: "2026-06-06", justifiee: true }
+            ],
+            emploi: JSON.parse(localStorage.getItem('mti_schedule_rel')) || [
+                { id: 1, jour: "Lundi", heure: "08:30 - 11:00", matiere: "Web PHP/MySQL", prof: "M. Lachhab", salle: "Salle 3 (ISI)" },
+                { id: 2, jour: "Mercredi", heure: "08:30 - 11:00", matiere: "Intelligence Artificielle", prof: "M. Lachhab", salle: "Labo IA" },
+                { id: 3, jour: "Vendredi", heure: "08:30 - 11:00", matiere: "Architecture Java", prof: "Prof. SUPMTI", salle: "Amphi A" },
+                { id: 4, jour: "Mardi", heure: "11:00 - 13:30", matiere: "Automatisation", prof: "M. Lachhab", salle: "Labo Réseau" },
+                { id: 5, jour: "Jeudi", heure: "11:00 - 13:30", matiere: "Web PHP/MySQL", prof: "M. Lachhab", salle: "Salle 3" },
+                { id: 6, jour: "Lundi", heure: "14:30 - 17:00", matiere: "Projet Pratique", prof: "Encadrant ISI", salle: "Salle Informatique" },
+                { id: 7, jour: "Mercredi", heure: "14:30 - 17:00", matiere: "Architecture Java", prof: "Prof. SUPMTI", salle: "Amphi A" },
+                { id: 8, jour: "Vendredi", heure: "14:30 - 17:00", matiere: "Mini-Projet IA", prof: "M. Lachhab", salle: "À distance" }
             ]
         };
 
+        // Rôles : 'admin' | 'prof' | 'student'
+        let currentRole = 'admin';
+        let currentStudentId = 101; // Étudiant simulé par défaut
+
         function commit() {
-            localStorage.setItem('mti_stud', JSON.stringify(storage.etudiants));
-            localStorage.setItem('mti_notes', JSON.stringify(storage.notes));
-            localStorage.setItem('mti_abs', JSON.stringify(storage.absences));
-            refreshDashboard();
+            localStorage.setItem('mti_stud_rel', JSON.stringify(storage.etudiants));
+            localStorage.setItem('mti_notes_rel', JSON.stringify(storage.notes));
+            localStorage.setItem('mti_abs_rel', JSON.stringify(storage.absences));
+            localStorage.setItem('mti_schedule_rel', JSON.stringify(storage.emploi));
+            refreshCurrentView();
         }
 
-        // --- NAVIGATION INTERNE ---
+        // --- COMMUTATION DES ROLES ET DROITS ---
+        function switchUserRole(role) {
+            currentRole = role;
+            
+            // Mise à jour visuelle des boutons de rôle
+            document.querySelectorAll('.role-btn').forEach(btn => btn.classList.remove('active'));
+            if(role === 'admin') document.getElementById('btn-role-admin').classList.add('active');
+            if(role === 'prof') document.getElementById('btn-role-prof').classList.add('active');
+            if(role === 'student') document.getElementById('btn-role-student').classList.add('active');
+
+            // Masquer/Afficher les éléments basés sur les droits
+            document.querySelectorAll('.admin-only').forEach(el => el.style.display = (role === 'admin') ? 'inline-block' : 'none');
+            document.querySelectorAll('.prof-only').forEach(el => el.style.display = (role === 'prof') ? 'inline-block' : 'none');
+            document.querySelectorAll('.writable-only').forEach(el => el.style.display = (role === 'admin' || role === 'prof') ? 'inline-block' : 'none');
+
+            // Gérer le sélecteur d'étudiant pour la simulation
+            const studSwitcher = document.getElementById('box-student-switcher');
+            if(role === 'student') {
+                studSwitcher.style.display = 'flex';
+                populateStudentSwitcherList();
+                currentStudentId = parseInt(document.getElementById('select-active-student').value) || 101;
+            } else {
+                studSwitcher.style.display = 'none';
+            }
+
+            // Mettre à jour les informations de profil d'en-tête
+            const headerName = document.getElementById('user-display-name');
+            const headerAvatar = document.getElementById('user-display-avatar');
+            const roleBadge = document.getElementById('display-active-role-text');
+
+            if(role === 'admin') {
+                headerName.innerText = "Administrateur Principal";
+                headerAvatar.innerText = "AP";
+                roleBadge.innerText = "ADMINISTRATEUR";
+                roleBadge.style.color = "var(--secondary-red)";
+            } else if (role === 'prof') {
+                headerName.innerText = "Prof. Youssef Lachhab";
+                headerAvatar.innerText = "YL";
+                roleBadge.innerText = "PROFESSEUR";
+                roleBadge.style.color = "var(--primary-teal)";
+            } else if (role === 'student') {
+                let st = storage.etudiants.find(s => s.id === currentStudentId);
+                headerName.innerText = st ? `${st.prenom} ${st.nom}` : "Portail Étudiant";
+                headerAvatar.innerText = st ? `${st.prenom[0]}${st.nom[0]}` : "PE";
+                roleBadge.innerText = "PORTAIL ÉTUDIANT";
+                roleBadge.style.color = "var(--success-green)";
+            }
+
+            // Rafraîchir l'interface courante
+            commit();
+        }
+
+        function populateStudentSwitcherList() {
+            const select = document.getElementById('select-active-student');
+            select.innerHTML = storage.etudiants.map(s => `<option value="${s.id}" ${s.id === currentStudentId ? 'selected' : ''}>${s.nom} ${s.prenom}</option>`).join('');
+        }
+
+        function changeActiveStudent(id) {
+            currentStudentId = parseInt(id);
+            // Mettre à jour l'en-tête
+            let st = storage.etudiants.find(s => s.id === currentStudentId);
+            if(st) {
+                document.getElementById('user-display-name').innerText = `${st.prenom} ${st.nom}`;
+                document.getElementById('user-display-avatar').innerText = `${st.prenom[0]}${st.nom[0]}`;
+            }
+            commit();
+        }
+
+        // --- ROUTAGE INTERNE SIMPLE ---
         function navigate(viewKey) {
             document.querySelectorAll('.section-page').forEach(view => view.classList.remove('active-page'));
             document.querySelectorAll('.nav-menu li').forEach(item => item.classList.remove('active'));
 
-            if(viewKey === 'dash') { document.getElementById('view-dash').classList.add('active-page'); document.getElementById('link-dash').classList.add('active'); document.getElementById('main-view-title').innerText = "Tableau de bord"; refreshDashboard(); }
-            if(viewKey === 'stud') { document.getElementById('view-stud').classList.add('active-page'); document.getElementById('link-stud').classList.add('active'); document.getElementById('main-view-title').innerText = "Gestion des Étudiants"; renderStudentsCRUD(); }
-            if(viewKey === 'note') { document.getElementById('view-note').classList.add('active-page'); document.getElementById('link-note').classList.add('active'); document.getElementById('main-view-title').innerText = "Gestion des Notes"; renderNotesView(); }
-            if(viewKey === 'abs')  { document.getElementById('view-abs').classList.add('active-page'); document.getElementById('link-abs').classList.add('active'); document.getElementById('main-view-title').innerText = "Registre des Absences"; renderAbsencesView(); }
-            if(viewKey === 'time') { document.getElementById('view-time').classList.add('active-page'); document.getElementById('link-time').classList.add('active'); document.getElementById('main-view-title').innerText = "Emploi du Temps Interactive"; }
+            const title = document.getElementById('main-view-title');
+
+            if(viewKey === 'dash') {
+                document.getElementById('view-dash').classList.add('active-page');
+                document.getElementById('link-dash').classList.add('active');
+                title.innerText = "Tableau de bord";
+            } else if(viewKey === 'stud') {
+                document.getElementById('view-stud').classList.add('active-page');
+                document.getElementById('link-stud').classList.add('active');
+                title.innerText = "Inscriptions (Table ETUDIANT)";
+            } else if(viewKey === 'note') {
+                document.getElementById('view-note').classList.add('active-page');
+                document.getElementById('link-note').classList.add('active');
+                title.innerText = "Saisie & Notes (Table NOTE)";
+            } else if(viewKey === 'abs') {
+                document.getElementById('view-abs').classList.add('active-page');
+                document.getElementById('link-abs').classList.add('active');
+                title.innerText = "Absences (Table ABSENCE)";
+            } else if(viewKey === 'time') {
+                document.getElementById('view-time').classList.add('active-page');
+                document.getElementById('link-time').classList.add('active');
+                title.innerText = "Emploi du Temps (Table EMPLOI_TEMPS)";
+            }
+            commit();
+        }
+
+        function refreshCurrentView() {
+            const activePage = document.querySelector('.section-page.active-page').id;
+            if(activePage === 'view-dash') refreshDashboard();
+            if(activePage === 'view-stud') renderStudentsCRUD();
+            if(activePage === 'view-note') renderNotesView();
+            if(activePage === 'view-abs') renderAbsencesView();
+            if(activePage === 'view-time') renderTimetable();
         }
 
         // --- GESTION DES MODALS ---
@@ -689,44 +908,82 @@
             }
         }
 
-        // --- LOGIQUE METIER MODULE 1 : DASHBOARD ---
+        // ================= LOGIQUE MODULE 1 : DASHBOARD =================
         function refreshDashboard() {
-            document.getElementById('card-count-students').innerText = storage.etudiants.length;
-            
-            let countUnjustified = storage.absences.filter(a => !a.justifiee).length;
-            document.getElementById('card-unjustified-abs').innerText = countUnjustified;
+            const dashGrid = document.getElementById('dashboard-grid-layout');
 
-            if(storage.notes.length > 0) {
-                let sum = storage.notes.reduce((acc, n) => acc + n.valeur, 0);
-                document.getElementById('card-global-avg').innerText = (sum / storage.notes.length).toFixed(2) + " /20";
+            if(currentRole === 'student') {
+                // Vue personnalisée pour l'étudiant connecté
+                document.getElementById('stat-label-1').innerText = "Mes Devoirs Évalués";
+                document.getElementById('stat-label-2').innerText = "Ma Moyenne";
+                document.getElementById('stat-label-3').innerText = "Mes Absences";
+
+                let myNotes = storage.notes.filter(n => n.id_etudiant === currentStudentId);
+                let myAbs = storage.absences.filter(a => a.id_etudiant === currentStudentId);
+
+                document.getElementById('card-count-students').innerText = myNotes.length;
+                document.getElementById('card-unjustified-abs').innerText = myAbs.length;
+
+                if(myNotes.length > 0) {
+                    let sum = myNotes.reduce((acc, n) => acc + n.valeur, 0);
+                    document.getElementById('card-global-avg').innerText = (sum / myNotes.length).toFixed(2) + " /20";
+                } else {
+                    document.getElementById('card-global-avg').innerText = "0.00";
+                }
+                dashGrid.style.display = 'none'; // Masquer la grille globale pour l'étudiant
             } else {
-                document.getElementById('card-global-avg').innerText = "0.00";
+                // Vue globale pour l'administration et les enseignants
+                document.getElementById('stat-label-1').innerText = "Effectif Étudiants";
+                document.getElementById('stat-label-2').innerText = "Moyenne Générale";
+                document.getElementById('stat-label-3').innerText = "Absences non Justifiées";
+
+                document.getElementById('card-count-students').innerText = storage.etudiants.length;
+                let countUnjustified = storage.absences.filter(a => !a.justifiee).length;
+                document.getElementById('card-unjustified-abs').innerText = countUnjustified;
+
+                if(storage.notes.length > 0) {
+                    let sum = storage.notes.reduce((acc, n) => acc + n.valeur, 0);
+                    document.getElementById('card-global-avg').innerText = (sum / storage.notes.length).toFixed(2) + " /20";
+                } else {
+                    document.getElementById('card-global-avg').innerText = "0.00";
+                }
+                dashGrid.style.display = 'grid';
+
+                // Classement des étudiants
+                let rankingList = storage.etudiants.map(st => {
+                    let currentNotes = storage.notes.filter(n => n.id_etudiant == st.id);
+                    let avg = currentNotes.length > 0 ? (currentNotes.reduce((s, n) => s + n.valeur, 0) / currentNotes.length).toFixed(2) : "0.00";
+                    return { name: st.nom + " " + st.prenom, average: parseFloat(avg) };
+                }).sort((x, y) => y.average - x.average);
+
+                document.querySelector('#table-dash-ranking tbody').innerHTML = rankingList.map((item, idx) => `
+                    <tr>
+                        <td><strong>#${idx + 1}</strong></td>
+                        <td>${item.name}</td>
+                        <td><span class="pill pill-green">${item.average.toFixed(2)} /20</span></td>
+                    </tr>
+                `).join('');
+
+                // Liste abrégée des absences du tableau de bord
+                document.querySelector('#table-dash-absences tbody').innerHTML = storage.absences.slice(-3).reverse().map(a => {
+                    let st = storage.etudiants.find(s => s.id == a.id_etudiant);
+                    return `<tr><td>${st ? st.nom : 'Externe'}</td><td>${a.seance}</td></tr>`;
+                }).join('');
             }
-
-            // Classement des étudiants selon leurs notes réelles
-            let rankingList = storage.etudiants.map(st => {
-                let currentNotes = storage.notes.filter(n => n.id_etudiant == st.id);
-                let avg = currentNotes.length > 0 ? (currentNotes.reduce((s, n) => s + n.valeur, 0) / currentNotes.length).toFixed(2) : "0.00";
-                return { name: st.nom + " " + st.prenom, average: parseFloat(avg) };
-            }).sort((x, y) => y.average - x.average);
-
-            document.querySelector('#table-dash-ranking tbody').innerHTML = rankingList.map((item, idx) => `
-                <tr>
-                    <td><strong>#${idx + 1}</strong></td>
-                    <td>${item.name}</td>
-                    <td><span class="pill pill-green">${item.average.toFixed(2)} /20</span></td>
-                </tr>
-            `).join('');
-
-            // Liste abrégée des absences du tableau de bord
-            document.querySelector('#table-dash-absences tbody').innerHTML = storage.absences.slice(-3).reverse().map(a => {
-                let st = storage.etudiants.find(s => s.id == a.id_etudiant);
-                return `<tr><td>${st ? st.nom : 'Externe'}</td><td>${a.seance}</td></tr>`;
-            }).join('');
         }
 
-        // --- LOGIQUE METIER MODULE 2 : ÉTUDIANTS (CRUD) ---
+        // ================= LOGIQUE MODULE 2 : ÉTUDIANTS (CRUD) =================
         function renderStudentsCRUD(dataSet = storage.etudiants) {
+            // Uniquement l'admin voit la colonne action pour supprimer
+            const tableHeaders = document.querySelector('#table-students-crud thead tr');
+            const hasActionHeader = tableHeaders.innerHTML.includes('Actions');
+
+            if(currentRole === 'admin' && !hasActionHeader) {
+                tableHeaders.innerHTML += '<th class="admin-only">Actions</th>';
+            } else if (currentRole !== 'admin' && hasActionHeader) {
+                tableHeaders.innerHTML = tableHeaders.innerHTML.replace('<th class="admin-only">Actions</th>', '');
+            }
+
             document.querySelector('#table-students-crud tbody').innerHTML = dataSet.map(st => `
                 <tr>
                     <td>SUP-${st.id}</td>
@@ -734,9 +991,10 @@
                     <td>${st.prenom}</td>
                     <td>${st.email}</td>
                     <td>${st.tel}</td>
-                    <td>
+                    ${currentRole === 'admin' ? `
+                    <td class="admin-only">
                         <button class="btn btn-danger" style="padding: 4px 10px; font-size: 0.75rem;" onclick="removeStudent(${st.id})">Radier</button>
-                    </td>
+                    </td>` : ''}
                 </tr>
             `).join('');
         }
@@ -748,19 +1006,20 @@
                 id: nextId,
                 nom: document.getElementById('in-stud-nom').value,
                 prenom: document.getElementById('in-stud-prenom').value,
+                age: parseInt(document.getElementById('in-stud-age').value),
                 email: document.getElementById('in-stud-email').value,
                 tel: document.getElementById('in-stud-tel').value
             });
-            commit(); renderStudentsCRUD(); toggleModal('modal-student', false);
+            commit(); toggleModal('modal-student', false);
             document.getElementById('form-add-student').reset();
         }
 
         function removeStudent(id) {
-            if(confirm("Confirmez-vous la suppression définitive de cet étudiant et de ses données liées (Notes/Absences) ?")) {
+            if(confirm("Confirmez-vous la suppression de cet étudiant ainsi que ses notes et absences associées ?")) {
                 storage.etudiants = storage.etudiants.filter(s => s.id !== id);
                 storage.notes = storage.notes.filter(n => n.id_etudiant !== id);
                 storage.absences = storage.absences.filter(a => a.id_etudiant !== id);
-                commit(); renderStudentsCRUD();
+                commit();
             }
         }
 
@@ -770,10 +1029,14 @@
             renderStudentsCRUD(filtered);
         }
 
-        // --- LOGIQUE METIER MODULE 3 : NOTES ---
+        // ================= LOGIQUE MODULE 3 : NOTES =================
         function renderNotesView() {
             let filterMatiere = document.getElementById('select-filter-matiere').value;
             let currentNotes = filterMatiere === 'all' ? storage.notes : storage.notes.filter(n => n.id_matiere === filterMatiere);
+
+            if(currentRole === 'student') {
+                currentNotes = currentNotes.filter(n => n.id_etudiant === currentStudentId);
+            }
 
             document.querySelector('#table-notes tbody').innerHTML = currentNotes.map(n => {
                 let st = storage.etudiants.find(s => s.id == n.id_etudiant);
@@ -798,13 +1061,29 @@
                 valeur: parseFloat(document.getElementById('in-note-valeur').value),
                 date: new Date().toISOString().split('T')[0]
             });
-            commit(); renderNotesView(); toggleModal('modal-note', false);
+            commit(); toggleModal('modal-note', false);
             document.getElementById('form-add-note').reset();
         }
 
-        // --- LOGIQUE METIER MODULE 4 : ABSENCES ---
+        // ================= LOGIQUE MODULE 4 : ABSENCES =================
         function renderAbsencesView() {
-            document.querySelector('#table-absences tbody').innerHTML = storage.absences.map(a => {
+            let currentAbs = storage.absences;
+            if(currentRole === 'student') {
+                currentAbs = currentAbs.filter(a => a.id_etudiant === currentStudentId);
+            }
+
+            // Gestion de l'entête d'action en fonction des droits d'écriture
+            const actionHeader = document.querySelector('#table-absences thead tr');
+            const hasAction = actionHeader.innerHTML.includes('Action Spécifique');
+            const canEdit = (currentRole === 'admin' || currentRole === 'prof');
+
+            if(canEdit && !hasAction) {
+                actionHeader.innerHTML += '<th class="writable-only">Action Spécifique</th>';
+            } else if (!canEdit && hasAction) {
+                actionHeader.innerHTML = actionHeader.innerHTML.replace('<th class="writable-only">Action Spécifique</th>', '');
+            }
+
+            document.querySelector('#table-absences tbody').innerHTML = currentAbs.map(a => {
                 let st = storage.etudiants.find(s => s.id == a.id_etudiant);
                 return `
                     <tr>
@@ -816,9 +1095,10 @@
                                 ${a.justifiee ? 'Justifiée' : 'Non Justifiée'}
                             </span>
                         </td>
-                        <td>
+                        ${canEdit ? `
+                        <td class="writable-only">
                             ${!a.justifiee ? `<button class="btn btn-primary" style="padding:4px 8px; font-size:0.75rem;" onclick="validateJustification(${a.id})">Justifier en 1 clic</button>` : '---'}
-                        </td>
+                        </td>` : ''}
                     </tr>
                 `;
             }).join('');
@@ -834,7 +1114,7 @@
                 date: new Date().toISOString().split('T')[0],
                 justifiee: false
             });
-            commit(); renderAbsencesView(); toggleModal('modal-abs', false);
+            commit(); toggleModal('modal-abs', false);
         }
 
         function validateJustification(id) {
@@ -842,13 +1122,74 @@
             if(targetAbs) {
                 targetAbs.justifiee = true;
                 commit();
-                renderAbsencesView();
             }
         }
 
-        // --- DEMARRAGE SYSTEME ---
+        // ================= LOGIQUE MODULE 5 : EMPLOI DU TEMPS =================
+        const scheduleDays = ["Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi"];
+        const scheduleHours = ["08:30 - 11:00", "11:00 - 13:30", "14:30 - 17:00"];
+
+        function renderTimetable() {
+            const container = document.getElementById('timetable-container');
+            let html = `<div class="sched-header" style="background:#2D3748;">Heures</div>`;
+            
+            // Écrire les entêtes des Jours
+            scheduleDays.forEach(day => {
+                html += `<div class="sched-header">${day}</div>`;
+            });
+
+            // Construire chaque créneau horaire
+            scheduleHours.forEach(hour => {
+                html += `<div class="hour-cell">${hour}</div>`;
+                
+                scheduleDays.forEach(day => {
+                    // Trouver si un cours est enregistré à ce jour/créneau
+                    let course = storage.emploi.find(e => e.jour === day && e.heure === hour);
+                    
+                    if(course) {
+                        html += `
+                            <div class="lesson-card">
+                                ${currentRole === 'admin' ? `<button class="delete-lesson-btn" style="display:block;" onclick="deleteLesson(${course.id})">❌</button>` : ''}
+                                <div class="lesson-name">${course.matiere}</div>
+                                <div class="lesson-prof">${course.prof}</div>
+                                <div class="lesson-room">${course.salle}</div>
+                            </div>
+                        `;
+                    } else {
+                        html += `<div class="empty-card"></div>`;
+                    }
+                });
+            });
+
+            container.innerHTML = html;
+        }
+
+        function submitSchedule(event) {
+            event.preventDefault();
+            let nextId = storage.emploi.length > 0 ? Math.max(...storage.emploi.map(e => e.id)) + 1 : 1;
+            
+            storage.emploi.push({
+                id: nextId,
+                jour: document.getElementById('in-sched-day').value,
+                heure: document.getElementById('in-sched-hour').value,
+                matiere: document.getElementById('in-sched-matiere').value,
+                prof: document.getElementById('in-sched-prof').value,
+                salle: document.getElementById('in-sched-room').value
+            });
+            commit(); toggleModal('modal-schedule', false);
+            document.getElementById('form-add-schedule').reset();
+        }
+
+        function deleteLesson(id) {
+            if(confirm("Retirer ce cours de l'emploi du temps ?")) {
+                storage.emploi = storage.emploi.filter(e => e.id !== id);
+                commit();
+            }
+        }
+
+        // --- DÉMARRAGE DU PROTOCOLE ---
         window.onload = function() {
-            refreshDashboard();
+            switchUserRole('admin'); // Démarre en tant qu'administrateur
         };
     </script>
 </body>
